@@ -3,7 +3,7 @@ layout: home
 hero:
   name: "Vibe Vibe"
   text: "人人都能学会 AI 编程"
-  tagline: "不写代码，也能做产品\n从零基础到全栈开发，让 AI 成为你的编程搭档"
+  tagline: "不写代码，也能做产品\n从零基础到全栈开发，放大你的天才创意"
   image:
     src: /logo.png
     alt: Vibe Coding
@@ -58,7 +58,7 @@ features:
 
 /* 引导话语样式 */
 .VPHero .tagline::after {
-  content: "点击下方按钮开始你的学习路径";
+  content: "点击下方按钮，立即开始你的 AI 编程之旅";
   display: block;
   margin-top: 1rem;
   color: #6B7280;
@@ -68,23 +68,23 @@ features:
 /* 按钮颜色配置 - 针对每个 action 包裹层单独配置 */
 /* 第1个按钮：零基础入门 - 绿色 */
 .VPHero .actions > .action:nth-child(1) .VPButton {
-  background-color: #45523E !important;
-  border-color: #45523E !important;
+  background-color: #15A051 !important;
+  border-color: #15A051 !important;
 }
 .VPHero .actions > .action:nth-child(1) .VPButton:hover {
   background-color: #4F5B53 !important;
   border-color: #4F5B53 !important;
 }
 
-/* 第2个按钮：有基础进阶 - 橙色 */
+/* 第2个按钮：有基础进阶 */
 .VPHero .actions > .action:nth-child(2) .VPButton {
-  background-color: #E6A23C !important;
-  border-color: #E6A23C !important;
+  background-color: #45523E !important;
+  border-color: #45523E !important;
   color: white !important;
 }
 .VPHero .actions > .action:nth-child(2) .VPButton:hover {
-  background-color: #F0B050 !important;
-  border-color: #F0B050 !important;
+  background-color: #45523E !important;
+  border-color: #45523E !important;
 }
 
 /* 第3个按钮：动手做项目 - 灰色 */
@@ -114,11 +114,11 @@ features:
 
 <div class="paths-container" style="display: flex; gap: 2rem; margin: 2rem 0; flex-wrap: wrap;">
 
-<div style="flex: 1; min-width: 300px; padding: 1.5rem; border-radius: 12px; background: linear-gradient(135deg, #45523E11 0%, #45523E22 100%); border: 1px solid #45523E33;">
+<div style="flex: 1; min-width: 300px; padding: 1.5rem; border-radius: 12px; background: linear-gradient(135deg, #15A05111 0%, #15A05122 100%); border: 1px solid #15A05133;">
 
 ### 基础篇：零基础入门
 
-<a href="/Basic/" style="display: inline-block; margin-bottom: 1rem; padding: 0.5rem 1.5rem; background: #45523E; color: white; text-decoration: none; border-radius: 8px; font-weight: 500;">开始阅读基础篇 →</a>
+<a href="/Basic/" style="display: inline-block; margin-bottom: 1rem; padding: 0.5rem 1.5rem; background: #15A051; color: white; text-decoration: none; border-radius: 8px; font-weight: 500;">开始阅读基础篇 →</a>
 
 **适合人群**：从未写过代码的小白、文科生、设计师、产品经理
 
@@ -135,11 +135,11 @@ features:
 
 </div>
 
-<div style="flex: 1; min-width: 300px; padding: 1.5rem; border-radius: 12px; background: linear-gradient(135deg, #E6A23C11 0%, #E6A23C22 100%); border: 1px solid #E6A23C33;">
+<div style="flex: 1; min-width: 300px; padding: 1.5rem; border-radius: 12px; background: linear-gradient(135deg, #45523E11 0%, #45523E22 100%); border: 1px solid #45523E33;">
 
 ### 进阶篇：从0到上线的避坑指南
 
-<a href="/Advanced/" style="display: inline-block; margin-bottom: 1rem; padding: 0.5rem 1.5rem; background: #E6A23C; color: white; text-decoration: none; border-radius: 8px; font-weight: 500;">开始阅读进阶篇 →</a>
+<a href="/Advanced/" style="display: inline-block; margin-bottom: 1rem; padding: 0.5rem 1.5rem; background: #45523E; color: white; text-decoration: none; border-radius: 8px; font-weight: 500;">开始阅读进阶篇 →</a>
 
 **适合人群**：想了解完整项目交付流程的开发者
 
@@ -234,4 +234,3 @@ features:
 - 在页面底部评论区反馈问题
 - 提交 [GitHub Issues](https://github.com/datawhalechina/vibe-vibe/issues)
 - 提交 Pull Request 完善内容
-
