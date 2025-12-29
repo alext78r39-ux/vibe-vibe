@@ -234,3 +234,13 @@ features:
 - 在页面底部评论区反馈问题
 - 提交 [GitHub Issues](https://github.com/datawhalechina/vibe-vibe/issues)
 - 提交 Pull Request 完善内容
+
+---
+
+<div style="text-align: center; color: var(--vp-c-text-2); font-size: 0.85rem; padding: 2rem 0; white-space: nowrap;">
+  <a href="https://beian.miit.gov.cn/" target="_blank" style="color: inherit; text-decoration: none;">蜀ICP备2024097797号-3</a>
+  <span style="margin: 0 8px;">|</span>
+  <a href="https://beian.mps.gov.cn/#/query/webSearch?code=51170202000484" target="_blank" style="color: inherit; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+    <img src="/gonganbeian.png" style="width: 15px; margin-right: 4px; vertical-align: middle;"/>川公网安备51170202000484号
+  </a>
+</div>
