@@ -105,7 +105,7 @@ export default {
             fontSize: '14px',
             lineHeight: '1.5'
           }
-        }, '抢先预览版，内容调整中，不代表最终品质')
+        }, '⚠️ Alpha内测版本警告：此为早期内部构建版本，尚不完整且可能存在错误，欢迎大家提Issue反馈问题或建议')
       },
       'doc-after': () => {
         const children: VNode[] = [
