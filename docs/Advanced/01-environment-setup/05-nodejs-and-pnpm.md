@@ -118,18 +118,15 @@ npm config set registry https://registry.npmmirror.com/ && npm install -g pnpm &
 ### Linux 用户
 
 ```bash
-# 一键安装（自动识别 Shell，幂等性，当前终端立即生效）
-if [ ! -d ~/.nvm ]; then rm -rf ~/.nvm && git clone https://gitee.com/mirrors/nvm.git ~/.nvm && cd ~/.nvm && git checkout v0.40.3; fi
-RC_FILE="${ZSH_VERSION:+$HOME/.zshrc}" && [ -z "$RC_FILE" ] && RC_FILE="$HOME/.bashrc"
-grep -q "NVM配置开始" "$RC_FILE" 2>/dev/null || cat >> "$RC_FILE" << 'EOF'
-# --- NVM 配置 ---
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node/
-EOF
-. "$NVM_DIR/nvm.sh" && nvm install --lts && nvm use --lts && nvm alias default lts/*
-npm config set registry https://registry.npmmirror.com/ && npm install -g pnpm && pnpm setup && pnpm config set registry https://registry.npmmirror.com/
-echo "✅ $(node -v) / $(pnpm -v)"
+# 一键安装（自动识别 Shell，幂等性，安装完成需要重启终端，如果需要当前终端生效可运行 source ~/.zshrc 或者 source ~/.bashrc）
+(export NVM_DIR="$HOME/.nvm" && RC="${ZSH_VERSION:+$HOME/.zshrc}" && [ -z "$RC" ] && RC="$HOME/.bashrc"
+[ ! -d "$NVM_DIR" ] && git clone https://gitee.com/mirrors/nvm.git "$NVM_DIR" && cd "$NVM_DIR" && git checkout v0.40.3 && cd - >/dev/null
+grep -q "NVM_DIR" "$RC" || printf '\nexport NVM_DIR="$HOME/.nvm"\n[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"\nexport NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node/\nexport PNPM_HOME="$HOME/.local/share/pnpm"\nexport PATH="$PNPM_HOME:$PATH"\n' >> "$RC"
+export NVM_NODEJS_ORG_MIRROR=https://npmmirror.com/mirrors/node/ && [ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh"
+nvm install --lts && nvm use --lts && nvm alias default "lts/*"
+npm config set registry https://registry.npmmirror.com/ && npm install -g pnpm && pnpm config set registry https://registry.npmmirror.com/
+pnpm setup >/dev/null 2>&1 && export PNPM_HOME="$HOME/.local/share/pnpm" && export PATH="$PNPM_HOME:$PATH"
+echo "✅ Node: $(node -v) / pnpm: $(pnpm -v)")
 ```
 
 ## pnpm 常用命令
