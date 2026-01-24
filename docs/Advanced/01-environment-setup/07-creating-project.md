@@ -243,9 +243,10 @@ pnpm create next-app@latest my-next-app
 > cd my-app
 > ```
 >
-> 然后初始化数据库（Prisma）：
+> 然后安装 Drizzle ORM（数据库）：
 > ```bash
-> npx prisma init
+> pnpm add drizzle-orm pg
+> pnpm add -D drizzle-kit
 > ```
 
 ## 标准项目结构
@@ -255,12 +256,12 @@ pnpm create next-app@latest my-next-app
 ### Next.js 全栈项目结构
 
 ```
-my-next-prisma-app/
-├── prisma/                  <-- 【数据库层】Prisma 的核心文件夹
-│   ├── schema.prisma        # 数据库模型定义文件 (最重要)
-│   └── migrations/          # 数据库变更历史记录 (自动生成)
-│
+my-next-app/
 ├── src/
+│   ├── db/                  <-- 【数据库层】Drizzle Schema 定义
+│   │   ├── schema.ts        # 数据库模型定义文件
+│   │   └── index.ts         # Drizzle 客户端实例
+│   │
 │   ├── app/                 <-- 【核心应用层】(前端页面 + 后端路由)
 │   │   ├── api/             # --- 这里就是你的"后端" ---
 │   │   │   └── users/
@@ -275,12 +276,10 @@ my-next-prisma-app/
 │   ├── components/          <-- 【UI 组件层】
 │   │   └── UserCard.tsx     # 可复用的展示组件
 │   │
-│   ├── lib/                 <-- 【工具配置层】
-│   │   └── prisma.ts        # Prisma 客户端实例 (连接数据库的单例)
-│   │
 │   └── types/               <-- 【类型定义】(可选，TypeScript定义)
 │       └── index.ts
 │
+├── drizzle.config.ts        <-- Drizzle Kit 配置文件
 ├── .env                     <-- 环境变量 (存放数据库连接字符串 DATABASE_URL)
 ├── next.config.js           <-- Next.js 配置文件
 ├── package.json             <-- 依赖管理
@@ -291,21 +290,26 @@ my-next-prisma-app/
 
 | 文件夹 | 职责 | 示例 |
 |--------|------|------|
-| `prisma/` | 数据库层 | 定义表结构、运行迁移 |
+| `src/db/` | 数据库层 | 定义表结构、数据库连接 |
 | `src/app/api/` | 后端 API | 定义 RESTful 接口 |
 | `src/app/` | 前端页面 | 定义页面路由 |
 | `src/components/` | UI 组件 | 可复用的界面元素 |
-| `src/lib/` | 工具函数 | 数据库连接、工具函数 |
 | `.env` | 环境变量 | API 密钥、数据库连接 |
 
-::: tip prisma/ — 数据库层
+::: tip src/db/ — 数据库层
 
 存放数据库相关的所有文件：
 
-- `schema.prisma`：定义数据库模型（表结构），如 User、Post 表
-- `migrations/`：数据库变更历史，每次修改模型后会自动生成迁移文件
+- `schema.ts`：定义数据库模型（表结构），如 User、Post 表
+- `index.ts`：Drizzle 客户端实例和数据库连接
 
-**AI 生成的数据库代码放在这里**：当 AI 说"添加一个 User 模型"时，修改 `schema.prisma` 文件。
+**AI 生成的数据库代码放在这里**：当 AI 说"添加一个 User 模型"时，修改 `schema.ts` 文件。
+
+:::
+
+::: tip drizzle.config.ts — Drizzle Kit 配置
+
+配置 Drizzle Kit 的方言（PostgreSQL）、Schema 路径、数据库连接信息等。
 
 :::
 
@@ -345,18 +349,6 @@ Next.js 的 App Router，通过文件结构定义页面路由：
 
 :::
 
-::: tip src/lib/ — 工具函数
-
-工具函数、配置文件、第三方客户端初始化：
-
-- `prisma.ts`：Prisma 客户端单例（连接数据库）
-- `utils.ts`：通用工具函数
-- `api.ts`：封装的 API 请求函数
-
-**AI 生成的工具代码放在这里**：当 AI 说"创建一个格式化日期的函数"时，在这里创建文件。
-
-:::
-
 ::: tip .env — 环境变量
 
 存放敏感配置，**不要提交到 Git**：
@@ -382,14 +374,11 @@ pnpm create next-app@latest my-fullstack-app
 # 2. 进入项目目录
 cd my-fullstack-app
 
-# 3. 初始化 Prisma（数据库）
-npx prisma init
+# 3. 安装 Drizzle ORM（数据库）
+pnpm add drizzle-orm pg
+pnpm add -D drizzle-kit
 
-# 4. 安装依赖（如果需要）
-pnpm add @prisma/client
-pnpm add -D prisma
-
-# 5. 启动开发服务器
+# 4. 启动开发服务器
 pnpm dev
 ```
 
@@ -415,7 +404,7 @@ AI 会给出完整的命令序列，你只需要复制粘贴执行即可。
 
 ::: tip 技术栈选择
 
-本教程技术栈为 **Next.js + Prisma + Tailwind CSS**，这是目前最成熟的全栈方案之一。如果你是初学者，直接使用这个组合即可，无需纠结。
+本教程技术栈为 **Next.js + Drizzle ORM + Tailwind CSS**，这是适合 AI 辅助开发的全栈方案。如果你是初学者，直接使用这个组合即可，无需纠结。
 
 :::
 

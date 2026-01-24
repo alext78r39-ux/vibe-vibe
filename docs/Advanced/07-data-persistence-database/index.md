@@ -21,8 +21,8 @@ BaaS、Serverless、Traditional Backend 三种方案的对比和选择指南。
 ### 7.4 数据库设计的核心理念 (./04-数据库设计的核心理念.md) 🟡
 从 PRD 到数据库设计的完整流程,如何识别实体、定义关系、优化结构。
 
-### 7.5 Prisma 入门 (./05-Prisma入门.md)
-Prisma ORM 的安装、Schema 定义、迁移管理、Client 初始化。
+### 7.5 Drizzle ORM 入门 (./05-Drizzle入门.md)
+Drizzle ORM 的安装、Schema 定义、迁移管理、查询构建。
 
 ### 7.6 数据库迁移实战 (./06-数据库迁移实战.md)
 迁移工作流、常见迁移场景、生产环境迁移、数据迁移策略。
@@ -77,30 +77,40 @@ PostgreSQL、MySQL、MongoDB、SQLite 等主流数据库的对比和选择建议
 
 
 
-### Prisma Schema
+### Drizzle Schema
 
-就像你用 JavaScript 指挥浏览器一样，指挥数据库也有专门的语言，叫 **SQL**。但在你不需要专门去学它，因为我们有用来操作数据库的 **Prisma** 组件。你需要理解它的蓝图文件——`schema.prisma`。
+操作数据库的标准语言是 SQL，在本教程中使用 **Drizzle ORM**。Drizzle 使用 TypeScript 定义 Schema，AI 会根据 PRD 文档自动生成。
 
-你可能会问，这个复杂的文件是谁写的？是你需要背诵语法然后一个字一个字敲出来的吗？当然不是。它是 **AI 从你的 PRD 文档里"悟"出来的**。当你在 PRD 里写下"一个用户可以发布多篇文章"时，AI 读懂了这层业务逻辑，于是它自动在 `User` 表里加上了 `posts` 字段，在 `Post` 表里加上了 `authorId` 字段。**你的工作不是写代码，而是检查 AI 是否正确理解了你的意图。**
+比如 PRD 中写明"一个用户可以发布多篇文章"，AI 会自动在 `User` 表添加 `posts` 字段，在 `Post` 表添加 `authorId` 外键。**你的工作是审查 AI 生成的代码是否正确。**
 
-老师傅说："你可能以为数据库设计是技术问题，其实是业务理解问题。AI 能懂外键、索引，但'用户和订单是什么关系'需要你理解业务。你的工作不是写 SQL，而是检查 AI 是否正确理解了你的业务。"
+老师傅说："数据库设计的关键是理解业务关系。AI 能处理技术实现，但'用户和订单是什么关系'需要你理解业务。"
 
 为了能看懂 AI 交的作业，老师傅指着一段代码，逐行教你理解：
 
-```
-model User {
-  id        Int      @id @default(autoincrement())  // 整数类型，作为主键，自动+1
-  email     String   @unique                        // 字符串类型，必须唯一
-  name      String?                                 // 字符串类型，但在类型后面加了问号，表示“可选项”（可以不填）
-  createdAt DateTime @default(now())                // 时间类型，默认填入当前时间
-  posts     Post[]                                  // 关联关系：一个用户可以有多篇文章
-}
+```typescript
+// src/db/schema.ts
+import { pgTable, serial, text, timestamp, integer } from 'drizzle-orm/pg-core'
+
+export const users = pgTable('users', {
+  id: serial('id').primaryKey(),           // 自增主键
+  email: text('email').notNull().unique(),  // 必填且唯一
+  name: text('name'),                       // 可选字段（不加 .notNull()）
+  createdAt: timestamp('created_at').defaultNow(),
+})
+
+// 关联表示例
+export const posts = pgTable('posts', {
+  id: serial('id').primaryKey(),
+  title: text('title').notNull(),
+  authorId: integer('author_id').references(() => users.id), // 外键关联
+})
 ```
 
-- **`model`**：这就代表一张**表**。
-- **类型**：`Int`（整数）、`String`（文本）、`Boolean`（真假）、`DateTime`（时间）。
-- **`?`（问号）**：这是新手的救星。它代表 **Optional（可选）**。如果你不确定一个字段是不是必填的（比如用户的“个人简介”），加上问号，数据库就允许它为空，否则一旦没填程序就会报错。
-- **`@unique`**：代表这个内容（如邮箱）全表唯一，不能重复注册。
+- **`pgTable`**：定义 PostgreSQL 表结构
+- **类型**：`serial`（自增整数）、`text`（文本）、`boolean`（布尔）、`timestamp`（时间）、`integer`（整数）
+- **可选字段**：不加 `.notNull()` 的字段默认可选
+- **`.unique()`**：字段值唯一
+- **`.references()`**：定义表之间的外键关联
 
 
 
@@ -141,9 +151,9 @@ model User {
 
 **坑一：Connection URL（连接字符串）** 你经常看到 `Error: Invalid URL` 的报错。老师傅告诉你，连接数据库就像寄信，格式必须严格遵守：`postgresql://用户名:密码@主机地址:端口/数据库名`。任何一个标点符号错了，或者密码里包含了特殊字符（需要转义），都会导致连接失败。
 
-**坑二：Schema 与代码不同步（最重要的命令）** 你让 AI 在数据库里增加了一个 `phone` 字段，AI 修改了 `schema.prisma` 文件。但当你运行代码时，程序却炸了，提示“User 上不存在 phone 属性”。你开始怀疑人生，老师傅却淡定地让你运行一句命令：`npx prisma generate`。
+**Drizzle 的优势：无需 generate 步骤**
 
-原来，Prisma 为了保证 TypeScript 的类型安全，需要根据 Schema 生成一份“类型定义文件”。**每当你修改了数据库结构（Schema），都必须重新运行 generate 命令**，告诉代码：“嘿，数据库结构变了，请更新你的认知。”
+Drizzle 的 Schema 就是纯 TypeScript 代码，类型定义直接可用。修改 Schema 后不需要运行生成命令，TypeScript 会立即获得正确的类型提示。这简化了开发流程，也避免了"Schema 与代码不同步"这类错误。
 
-老师傅特意叮嘱：**这个命令非常重要，以至于在未来你部署上线时的构建命令里，也必须把它加进去**，否则线上的代码会因为不认识新的数据库结构而报错。
+部署时也无需额外的构建步骤，直接使用默认的 `next build` 即可。这比 Prisma 的 `npx prisma generate && next build` 更简单。
 

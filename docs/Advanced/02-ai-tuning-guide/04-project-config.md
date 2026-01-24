@@ -187,7 +187,7 @@ Next.js 16 + TypeScript + Tailwind + shadcn/ui
 ## 技术栈
 - **框架**: Next.js 16 (App Router)
 - **语言**: TypeScript (严格模式)
-- **数据库**: Prisma + PostgreSQL
+- **数据库**: Drizzle ORM + PostgreSQL
 - **样式**: Tailwind CSS
 - **组件**: shadcn/ui
 
