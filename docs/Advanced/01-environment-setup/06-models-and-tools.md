@@ -151,7 +151,7 @@ AI IDE 在此基础上集成了 AI Agent。这些 Agent 可以使用内置终端
 | 工具 | 用途 | 官网 |
 |------|------|------|
 | **DBeaver** | 通用数据库客户端（开源） | https://dbeaver.io |
-| **Prisma Studio** | 可视化 Prisma 数据库 | https://www.prisma.io/studio |
+| **Drizzle Studio** | 可视化 Drizzle 数据库 | https://orm.drizzle.team/studio |
 | **TablePlus** | 通用数据库客户端 | https://tableplus.com |
 | **Beekeeper Studio** | 开源数据库客户端 | https://www.beekeeperstudio.io |
 | **HeidiSQL** | Windows 开源数据库工具 | https://www.heidisql.com |
@@ -269,10 +269,10 @@ Vibecoding 理念建立在 AI 原生开发之上，AI 编辑器能显著提升�
 
 **A**: 最好装，或者让 AI 帮你完成数据库操作。
 
-Prisma Studio 内置在 Prisma 中，启动即可：
+Drizzle Studio 随 Drizzle Kit 安装，启动即可：
 
 ```bash
-npx prisma studio
+npx drizzle-kit studio
 ```
 
 推荐安装 DBeaver，功能强大且开源。你也可以让 AI 通过命令行或脚本来完成数据库操作，无需手动管理。

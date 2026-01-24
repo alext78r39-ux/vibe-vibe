@@ -53,7 +53,7 @@ chapter: "第一章"
   └─ Middleware
         ↓
 数据存储
-  ├─ Prisma ORM
+  ├─ Drizzle ORM
   ├─ PostgreSQL
   └─ Supabase
 ```
@@ -68,7 +68,7 @@ chapter: "第一章"
 | **语言** | TypeScript | 类型安全的 JavaScript |
 | **样式** | Tailwind CSS | 实用优先的 CSS 框架 |
 | **组件库** | shadcn/ui | 可复用的 UI 组件 |
-| **数据库 ORM** | Prisma | 类型安全的数据库操作 |
+| **数据库 ORM** | Drizzle ORM | 类型安全的数据库操作 |
 | **数据库** | PostgreSQL | 关系型数据库 |
 | **AI 集成** | Vercel AI SDK | 流式 AI 交互 |
 
@@ -201,7 +201,7 @@ pnpm add zod
 | `next` | Next.js 全栈框架 |
 | `react` | React 前端库 |
 | `typescript` | TypeScript 类型系统 |
-| `@prisma/client` | Prisma 数据库 ORM |
+| `drizzle-orm` | Drizzle 数据库 ORM |
 | `tailwindcss` | Tailwind CSS 样式框架 |
 | `@vercel/node` | Vercel 部署相关 |
 | `ai` | Vercel AI SDK |
@@ -217,7 +217,7 @@ pnpm add zod
 | 层级 | 你需要知道 | 不需要 |
 |------|-----------|--------|
 | 概念 | Next.js 是全栈框架，TypeScript 有类型检查 | 记住语法 |
-| 作用 | Prisma 用来操作数据库，Tailwind 写样式 | 手写代码 |
+| 作用 | Drizzle ORM 用来操作数据库，Tailwind 写样式 | 手写代码 |
 | 识别 | 看到 `.tsx` 知道是 TypeScript 文件 | 理解底层原理 |
 
 AI 会负责写代码，你只需要：

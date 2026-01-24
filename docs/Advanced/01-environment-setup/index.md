@@ -4,6 +4,7 @@ title: "第一章：环境搭建与代码运行基础"
 
 
 ![01-environment-setup_index.png](../../public/images/Advanced/01-environment-setup_index.png)
+
 # 第一章：环境搭建与代码运行基础
 
 ## 序言
@@ -94,7 +95,9 @@ title: "第一章：环境搭建与代码运行基础"
 
 ---
 
-## 动手实践
+### 动手实践
 
 按 1.5 节装好环境后，新建一个英文文件夹，打开 AI 工具对它说："帮我在这里创建一个 Next.js 项目"，然后跟着它的指引执行命令，最后在浏览器打开 `localhost:3000`——你就正式踏入 AI 编程的世界了！
+
+
 

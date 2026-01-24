@@ -221,7 +221,7 @@ graph TB
 | **模糊指令** | "帮我优化一下代码" | "优化登录页面的加载性能：添加图片懒加载、延迟加载非关键资源" |
 | **无边界限制** | "写一个完整的电商系统" | "实现用户评论功能，包括：评论表单、列表展示、数据持久化" |
 | **强行要求** | "你必须给出正确答案，不能说不知道" | "如果不确定，请明确说'我不确定'，而不是编造答案" |
-| **具体任务** | "帮我写一个登录功能" | "实现用户登录功能：用户名+密码登录，使用 Next.js 16 App Router，Prisma + PostgreSQL，包含表单验证和错误处理" |
+| **具体任务** | "帮我写一个登录功能" | "实现用户登录功能：用户名+密码登录，使用 Next.js 16 App Router，Drizzle ORM + PostgreSQL，包含表单验证和错误处理" |
 | **提供上下文** | "修复这个 Bug" | "修复 Bug：文件 app/login/page.tsx，问题：用户登录后没有跳转到首页，预期：跳转到 /dashboard" |
 | **指令要具体** | "添加测试" | "为 app/login/page.tsx 编写测试用例，框架：Playwright，覆盖场景：密码错误、账号不存在、网络错误" |
 
@@ -248,7 +248,7 @@ graph TB
 技术栈：
 - Next.js [版本]
 - TypeScript
-- Prisma
+- Drizzle ORM
 - [其他技术]
 
 需求：
@@ -618,11 +618,10 @@ VibeCoding 五步工作流是一个**推荐的实践模式**，适合大多数�
 
 **输出示例**:
 ```
-项目使用 Next.js 16 + TypeScript + Prisma
+项目使用 Next.js 16 + TypeScript + Drizzle
 - app/: 页面和 API
 - components/: 可复用组件
-- lib/: 工具函数
-- prisma/: 数据库模型
+- src/db/: 数据库模型
 ```
 
 #### 2. 规划实现步骤
@@ -641,8 +640,8 @@ VibeCoding 五步工作流是一个**推荐的实践模式**，适合大多数�
 **输出示例**:
 ```
 步骤:
-1. 更新 Prisma schema (添加 Comment 模型)
-2. 运行 prisma migrate
+1. 更新 Drizzle schema (添加 Comment 模型)
+2. 运行 npx drizzle-kit push
 3. 创建 API route (app/api/comments/route.ts)
 4. 创建评论组件 (components/CommentForm.tsx)
 5. 集成到详情页
@@ -660,7 +659,7 @@ VibeCoding 五步工作流是一个**推荐的实践模式**，适合大多数�
 "实现用户评论功能"
 
 # AI 会自动拆分为：
-1. 更新 Prisma schema
+1. 更新 Drizzle schema
 2. 运行数据库迁移
 3. 创建 API 端点
 4. 编写前端组件
@@ -676,7 +675,7 @@ VibeCoding 五步工作流是一个**推荐的实践模式**，适合大多数�
 
 **当然，你也可以分步执行**：
 ```bash
-"按照步骤 1，更新 Prisma schema"
+"按照步骤 1，更新 Drizzle schema"
 ```
 
 ```bash
