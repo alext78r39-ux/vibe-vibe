@@ -177,4 +177,4 @@ README.md 就像是项目的"门面"，包含：
 
 ---
 
-**下一章**：第3.5章：开发常识与技术栈 (../03-5-dev-fundamentals/index.md)
+**下一章**：第四章：开发常识与技术栈 (../04-dev-fundamentals/index.md)
