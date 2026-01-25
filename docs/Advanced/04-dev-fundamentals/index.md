@@ -107,7 +107,15 @@ title: "第四章：开发常识与技术栈"
 ```json
 {
   "name": "张三",
-  "email": "zhang@example.com"
+  "email": "zhang@example.com",
+  "avatar": "https://example.com/avatar.jpg",
+  "location": {
+    "country": "中国",
+    "province": "北京",
+    "city": "北京"
+  },
+  "birthday": "1990-01-15",
+  "phone": "+86 138 0000 0000"
 }
 ```
 
