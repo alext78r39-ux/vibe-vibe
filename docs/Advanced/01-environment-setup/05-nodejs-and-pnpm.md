@@ -52,69 +52,27 @@ pnpm 是 Node.js 的包管理器，用于安装项目依赖（第三方代码包
 
 #### 方案 A：使用 nvm（推荐）
 
-下载 nvm-windows 安装包：https://nvm.uihtm.com/nvm-1.2.2-setup.zip
+**📥 下载 nvm**：https://nvm.uihtm.com/nvm-1.2.2-setup.zip
 
-下载后解压，运行 `.exe` 安装程序。
-
-::: tip 如果无法下载
-
-访问 nvm 中文官网 (https://nvm.uihtm.com/doc/download-nvm.html) 获取最新安装指南。
-
-:::
-
-安装完成后**打开新的 PowerShell 窗口**，然后执行：
+下载后解压，运行 `.exe` 安装程序。安装完成后**打开新的 PowerShell 窗口**，执行：
 
 ```powershell
-# 安装最新 LTS 版本（当前为 24.x）
-nvm install lts
-nvm use lts
-
-# 验证
-node -v
-
-# 配置 npm 国内源并安装 pnpm
-npm config set registry https://registry.npmmirror.com/
-npm install -g pnpm
-
-# 配置 pnpm
-pnpm setup
-
-# 配置 pnpm 国内源
-pnpm config set registry https://registry.npmmirror.com/
-
-# 验证
-pnpm -v
+nvm install lts; nvm use lts; npm config set registry https://registry.npmmirror.com/; npm install -g pnpm; pnpm setup; pnpm config set registry https://registry.npmmirror.com/; node -v; pnpm -v
 ```
+
+> **这条命令做了什么**：安装 Node.js 24 LTS → 配置 npm 国内源 → 安装 pnpm → 配置 pnpm 国内源。全部设置为国内镜像，确保后续下载速度。
 
 #### 方案 B：直接安装 Node.js（nvm 网络失败时）
 
-如果 `nvm install lts` 因网络问题失败，可以从国内镜像直接下载安装包：
+**📥 下载 Node.js**：https://npmmirror.com/mirrors/node/v24.13.0/node-v24.13.0-x64.msi
 
-**📥 下载地址**：https://npmmirror.com/mirrors/node/v24.13.0/node-v24.13.0-x64.msi
-
-下载后双击安装，一路"下一步"即可。
-
-**⚠️ 安装完成后，必须打开新的 PowerShell 窗口**，然后执行以下命令：
+双击安装，一路"下一步"即可。**⚠️ 安装完成后必须打开新的 PowerShell 窗口**，执行：
 
 ```powershell
-# 验证 Node.js 已安装
-node -v  # 应显示 v24.13.0 或类似版本
-
-# 配置 npm 国内源并安装 pnpm
-npm config set registry https://registry.npmmirror.com/
-npm install -g pnpm
-pnpm setup
-pnpm config set registry https://registry.npmmirror.com/
-
-# 验证
-pnpm -v
+npm config set registry https://registry.npmmirror.com/; npm install -g pnpm; pnpm setup; pnpm config set registry https://registry.npmmirror.com/; node -v; pnpm -v
 ```
 
-::: tip 直接安装 vs nvm
-
-直接安装 Node.js 后无法像 nvm 那样轻松切换版本，但对于学习本教程完全够用。如果未来需要多版本管理，可以再安装 nvm。
-
-:::
+> **这条命令做了什么**：配置 npm 和 pnpm 的国内镜像源，然后验证安装成功。命令可重复执行，不会报错。
 
 ### Mac 用户
 
