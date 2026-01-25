@@ -121,6 +121,20 @@ mkdir folder-name
 
 当你输入 `node`、`pnpm` 这样的命令时，系统是如何找到它们的？
 
+```mermaid
+sequenceDiagram
+    participant 用户 as 用户输入命令
+    participant Shell as Shell 解释器
+    participant PATH as PATH 环境变量
+    participant 程序 as 可执行程序
+
+    用户->>Shell: 输入 "pnpm"
+    Shell->>PATH: 查找 PATH 中的目录
+    PATH-->>Shell: 返回目录列表
+    Shell->>程序: 找到 pnpm 可执行文件
+    程序-->>用户: 命令执行
+```
+
 **PATH 的工作原理**：
 
 1. 你输入 `pnpm`
