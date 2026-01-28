@@ -60,7 +60,7 @@ title: "第四章：开发常识与技术栈"
 
 这四个概念是**图灵完备**的基础。这意味着任何可计算的问题，都可以用这四种构件的组合来解决。
 
-> 4.3 编程的基本构件 (./03-programming-basics.md) 🟢 - 理解代码的四个核心概念
+> 4.3 如何读懂 AI 生成的代码 (./03-programming-basics.md) 🟢 - 理解代码的四个核心概念
 
 ### API 与 HTTP 基础
 
@@ -145,7 +145,7 @@ README.md 就像是项目的"门面"，包含：
 ```
 - **4.1 技术栈决策框架** (./01-tech-stack-decision.md) 🟡 - 系统化地选择合适的技术栈
 - **4.2 PRD与技术文档的关系** (./02-prd-and-tech-docs.md) 🟢 - 理解产品文档与技术文档的分工
-- **4.3 编程的基本构件** (./03-programming-basics.md) 🟢 - 理解代码的四个核心概念
+- **4.3 如何读懂 AI 生成的代码** (./03-programming-basics.md) 🟢 - 理解代码的四个核心概念
 - **4.4 API与HTTP基础** (./04-api-and-http.md) 🟢 - 掌握 API 和 HTTP 协议的工作原理
 - **4.5 前后端分离概念** (./05-frontend-backend-separation.md) 🟢 - 理解前后端分离的架构与交互
 - **4.6 API集成实战** (./06-api-integration.md) 🟢 - 从零开始集成外部 API
