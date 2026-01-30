@@ -26,7 +26,7 @@ API（Application Programming Interface，应用程序接口）就是应用程�
 
 ### 为什么 API 如此重要？
 
-想象一下，你想做一个旅游应用。你需要在地图上标注景点，显示当地天气，处理用户支付。在 API 出现之前，你必须自己搭建地图服务器、雇佣气象学家、对接银行系统。现在呢？调用地图 API、调用天气 API、调用支付 API——你只需要关注自己的核心业务逻辑，剩下的都交给专业人士去做。
+想象一下，你想做一个旅游应用。你需要在地图上标注景点，显示当地天气，处理用户支付。在 API 出现之前，你必须自己搭建地图服务器、雇佣气象学家、对接银行系统。现在呢？调用地图服务 API、调用天气服务 API、调用支付服务 API——你只需要关注自己的核心业务逻辑，剩下的都交给专业人士去做。
 
 这不仅是效率问题，更是可能性问题。API 让个人开发者也能做出以前只有大公司才能做出的产品。你可以把不同服务的数据和能力像搭积木一样组合起来，创造出全新的东西。
 
@@ -38,19 +38,20 @@ API 通常返回 **JSON** 格式的数据（参见 4.6 配置文件格式）。J
 
 ### 常见的 API 能力
 
-| 能力 | 常见 API | 你能做什么 |
-|------|---------|-----------|
-| **AI 对话** | OpenAI、Anthropic | 聊天机器人、内容生成 |
-| **地图服务** | Google Maps、高德地图 | 位置标注、路线规划 |
-| **支付能力** | Stripe、支付宝 | 在线收款、订阅管理 |
-| **数据存储** | Cloudflare R2、AWS S3 | 文件上传、数据备份 |
-| **邮件发送** | Resend、SendGrid | 通知邮件、营销邮件 |
-| **短信/语音** | Twilio | 验证码、语音通知 |
+现代 API 生态已经非常丰富，从基础的数据存储到前沿的 AI 多模态能力，都有成熟的服务可用：
 
-大多数 API 都很友好：
-- 提供**免费额度**让你测试和小规模使用
-- 有详细的**开发者文档**和示例代码
-- 提供**官方 SDK**帮你快速集成
+| 能力类型 | 国际主流 | 国内主流 | 应用场景 |
+|---------|---------|---------|---------|
+| **AI 对话** | GPT、Claude、Gemini | 通义千问、文心一言、豆包、Kimi、DeepSeek | 聊天机器人、内容生成 |
+| **AI 图像生成** | DALL-E、Midjourney、Stable Diffusion | 通义万相、文心一格、即梦 | 产品设计、营销素材 |
+| **AI 视频生成** | Sora、Runway、Pika、Kling | 可灵、海螺 AI、豆包 Seedance | 短视频、广告制作 |
+| **AI 音乐生成** | Suno、Udio | 豆包音乐、天工音乐 | 配乐创作、音效制作 |
+| **语音识别/合成** | Whisper、ElevenLabs | 讯飞语音、豆包语音、MiniMax 海螺语音 | 语音输入、智能配音 |
+| **代码生成** | GitHub Copilot、Cursor | 通义灵码、文心快码、CodeGeeX | 代码补全、自动编程 |
+| **地图服务** | Google Maps、Mapbox | 高德地图、百度地图、腾讯地图 | 位置标注、路线规划 |
+| **支付能力** | Stripe、PayPal | 支付宝、微信支付 | 在线收款、订阅管理 |
+| **数据存储** | AWS S3、Cloudflare R2 | 阿里云 OSS、腾讯云 COS、七牛云 | 文件上传、数据备份 |
+| **短信/邮件** | Twilio、SendGrid | 阿里云短信、SendCloud | 验证码、通知推送 |
 
 ---
 
@@ -86,9 +87,7 @@ API Key 就像你的银行卡密码——一旦泄露，别人就能冒充你使
 
 **什么是 SDK？**
 
-SDK（Software Development Kit，软件开发工具包）是官方提供的"翻译器"。想象一下：API 说的是英语，而你的代码说的是中文。SDK 就是那个帮你实时翻译的助手。
-
-当你使用 SDK 时，你用的是熟悉的编程语言写函数调用，SDK 内部帮你处理 HTTP 请求、JSON 序列化、错误处理等细节。更重要的是，官方 SDK 通常经过充分测试，能正确处理超时、重试、认证刷新等边缘情况。
+SDK（Software Development Kit，软件开发工具包）是官方提供的封装库。它把你需要手动处理的底层操作（如 HTTP 请求、JSON 序列化、错误处理、超时重试等）都封装成简单的函数调用。你只需要调用 `generateText()` 这样的方法，SDK 内部会帮你完成所有复杂的网络交互。
 
 ::: tip 为什么优先使用 SDK？
 
@@ -96,10 +95,7 @@ SDK（Software Development Kit，软件开发工具包）是官方提供的"翻�
 
 :::
 
-对于 AI 应用，推荐使用 **Vercel AI SDK**：
-- 极大简化了 AI 应用的开发
-- 处理了复杂的流式传输协议
-- 让 AI 的回复能够实时逐字显示
+对于 AI 应用，推荐使用 **Vercel AI SDK**。它提供 `@ai-sdk/openai-compatible` 包，专门用于对接实现 OpenAI API 格式的服务商。由于 OpenAI 的 API 设计已成为行业事实标准，大多数模型服务商（包括国内）都选择兼容其接口格式——在请求结构、响应字段、鉴权方式等方面保持一致。这意味着开发者只需学习一套 API 规范，修改 `baseURL`、API Key 和模型名称即可调用全球主流大模型，无需为每个模型学习不同的 SDK。
 
 ### 第三步：配置环境变量
 
@@ -109,8 +105,9 @@ SDK（Software Development Kit，软件开发工具包）是官方提供的"翻�
 
 ```bash
 # .env 文件
-OPENAI_API_KEY=sk-xxx
-ANTHROPIC_API_KEY=sk-ant-xxx
+AI_API_KEY=sk-xxx                   # API 密钥
+AI_BASE_URL=https://api.openai.com/v1  # API 基础地址
+AI_MODEL=gpt-4o-mini                # 模型名称
 ```
 
 环境变量就像是代码和密钥之间的"防火墙"：
@@ -136,22 +133,33 @@ Next.js 项目中，`.env.local` 文件用于存储本地开发的环境变量�
 
 ```typescript
 // 测试 API 连接
-import OpenAI from 'openai';
+import { createOpenAICompatible } from '@ai-sdk/openai-compatible';
+import { generateText } from 'ai';
 
-const openai = new OpenAI();
+// 创建客户端实例
+const client = createOpenAICompatible({
+  name: 'my-provider',
+  apiKey: process.env.AI_API_KEY,
+  baseURL: process.env.AI_BASE_URL,
+});
 
 async function testConnection() {
-  const response = await openai.chat.completions.create({
-    model: 'gpt-4o-mini',
-    messages: [{ role: 'user', content: 'Hello' }],
-    max_tokens: 10,
+  const { text } = await generateText({
+    model: client.chatModel(process.env.AI_MODEL!),  // 从环境变量读取模型名称
+    prompt: '你好，请回复"连接成功"',
   });
 
-  console.log(response.choices[0].message.content);
+  console.log(text);
 }
 
 testConnection();
 ```
+
+**测试要点**：
+- 使用 `createOpenAICompatible` 创建客户端，传入 `apiKey` 和 `baseURL`
+- 使用 `generateText` 发送简单的测试消息
+- `chatModel()` 中填入模型名称（从环境变量读取或硬编码）
+- 如果能收到回复，说明配置正确
 
 如果测试成功，说明：
 - API Key 有效
@@ -166,33 +174,45 @@ testConnection();
 
 ### 第五步：归档参考文档
 
-等测试通过了，不要急着继续开发。先把 API 的关键信息整理一下，存到文档里。
+等测试通过了，不要急着继续开发。先把 API 的官方文档保存下来，方便后续查阅。
 
-为什么？因为下次你让 AI 写相关功能时，如果直接把文档喂给它，它就能精准地写出调用代码。否则你可能需要反复解释各种参数和细节。
+为什么？因为下次你让 AI 写相关功能时，如果直接把官方文档喂给它，它就能精准地写出调用代码。否则你可能需要反复解释各种参数和细节。
 
-归档的内容不需要太复杂，记录这些就够了：
+**推荐做法：**
+
+1. **保存官方文档**：将官方文档的关键页面保存为 Markdown 文件（可以使用浏览器插件如 "MarkDownload" 或手动复制）
+2. **提取常用代码**：把最常用的调用示例整理成速查表
+
+**文档存放位置建议：**
+
+```
+docs/
+├── api-references/
+│   ├── openai-api.md          # 官方文档存档
+│   ├── aliyun-qwen-api.md     # 官方文档存档
+│   └── my-cheatsheet.md       # 个人整理的速查表
+```
+
+**速查表示例**（`my-cheatsheet.md`）：
 
 ```markdown
-# API 参考
+# API 速查表
 
-## OpenAI Chat Completions
+## 环境变量
+- AI_API_KEY
+- AI_BASE_URL
+- AI_MODEL
 
-- 接口：POST https://api.openai.com/v1/chat/completions
-- 文档：https://platform.openai.com/docs/api-reference/chat
-
-### 请求参数
-- model: 模型名称（如 gpt-4o-mini）
-- messages: 对话消息数组
-- max_tokens: 最大生成 token 数
-
-### 示例
-\`\`\`typescript
-const response = await openai.chat.completions.create({
-  model: 'gpt-4o-mini',
-  messages: [{ role: 'user', content: '你好' }],
-});
-\`\`\`
+## 官方文档链接
+- [OpenAI API](https://platform.openai.com/docs)
+- [阿里云通义千问](https://help.aliyun.com/zh/model-studio/)
 ```
+
+::: tip 为什么保存官方文档？
+
+官方文档包含完整的参数说明、错误码定义、使用限制等信息。自己重写一份容易遗漏细节，直接保存原版最可靠。当需要 AI 帮你写代码时，把这些文档作为上下文提供给它，生成的代码更准确。
+
+:::
 
 ### 第六步：业务功能开发
 
@@ -314,6 +334,19 @@ flowchart TD
 ### Q4: 多个环境（开发/生产）如何管理 API Key？
 
 使用不同的环境变量文件。Next.js 支持 `.env.local`（本地）、`.env.production`（生产）等多环境配置。
+
+### Q5: 国内 API 和国际 API 该如何选择？
+
+根据你的用户群体和业务需求：
+
+- **服务国内用户**：优先选择国内 API，网络延迟更低，合规性更好
+- **服务海外用户**：选择国际 API，全球节点覆盖更好
+- **AI 能力**：国内外各有优势，可以对比效果和价格后选择
+- **存储/短信等基础服务**：国内服务商通常更便宜、响应更快
+
+### Q6: 国内大模型 API 兼容 OpenAI 格式吗？
+
+是的，大多数国内大模型 API 都提供 OpenAI 兼容模式。使用兼容模式时，你只需要修改 `baseURL`、API Key 和模型名称，其他代码基本不用改。具体配置请查阅各服务商的官方文档。
 
 ---
 
