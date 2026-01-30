@@ -289,4 +289,4 @@ source ~/.zshrc
 
 ## 相关内容
 
-- 详见：[1.5 Node.js环境与包管理]
+- 详见：[1.5 包管理与项目配置](./05-package-manager-and-config.md)

@@ -8,10 +8,14 @@ chapter: "第一章"
 
 > **阅读完本节后，你将会收获：**
 > - 理解 AI 模型、CLI 工具和 IDE 工具的区别
-> - 掌握 Claude Code + GLM-4.7 的安装配置方法
 > - 了解如何根据需求选择合适的工具
+> - 掌握 GLM 模型的配置方法
 
-环境搭建完成后，选择合适的模型与工具组合能让 AI 编程事半功倍。
+::: tip 还没安装 Claude Code？
+
+如果你还没有安装 Claude Code 和配置模型，请参考 [1.0 快速开始](./00-quick-start.md) 完成安装配置。
+
+:::
 
 ## 基本概念
 
@@ -92,27 +96,11 @@ chapter: "第一章"
 
 :::
 
-## 安装配置：Claude Code + GLM-4.7
+## 配置 GLM 模型
 
-::: danger 步骤 0：安装 Git（必装）
+如果你已经按照 [1.0 快速开始](./00-quick-start.md) 配置好了 GLM 模型，可以跳过本节。
 
-没有 Git，无法进行版本控制，无法提交代码。AI 编程工具依赖 Git 来跟踪代码变更。
-
-- **Windows**：https://registry.npmmirror.com/-/binary/git-for-windows/v2.52.0.windows.1/Git-2.52.0-64-bit.exe
-- **Mac**：系统自带，或 `brew install git`
-- **Linux**：`sudo apt install git`
-
-安装后验证：`git --version`
-
-:::
-
-### 步骤 1：安装 Claude Code
-
-```bash
-npm install -g @anthropic-ai/claude-code
-```
-
-### 步骤 2：购买编码套餐
+### 步骤 1：购买编码套餐
 
 访问 [智谱 AI 开放平台](https://open.bigmodel.cn/)，购买官方编码套餐，获取 API Key。
 
@@ -122,7 +110,7 @@ API Key 是调用大模型服务的"通行证"，是你与智谱 AI 服务器通
 
 :::
 
-### 步骤 3：自动配置
+### 步骤 2：自动配置
 
 ```bash
 npx @z_ai/coding-helper
@@ -181,5 +169,6 @@ Cursor 是 VS Code 的 AI 增强版。VS Code 需要手动安装 AI 插件，Cur
 
 - 详见：[第2章 AI调教指南](../02-ai-tuning-guide/)
 - 详见：[2.2 VibeCoding工作流详解](../02-ai-tuning-guide/02-vibecoding-workflow.md)
+- 前置：[1.0 快速开始](./00-quick-start.md)
 - 前置：[1.4 Terminal 终端入门](./04-terminal-basics.md)
-- 前置：[1.5 Node.js 环境与包管理](./05-nodejs-and-pnpm.md)
+- 前置：[1.5 包管理与项目配置](./05-package-manager-and-config.md)
