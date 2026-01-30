@@ -53,6 +53,18 @@ nvm install lts; nvm use lts; npm config set registry https://registry.npmmirror
 
 > 这条命令安装 Node.js 24 LTS → 配置国内源 → 安装 pnpm → 配置 pnpm 国内源。命令可重复执行。
 
+::: warning PowerShell 执行策略错误？
+
+如果在 PowerShell 中运行安装命令时出现"无法加载脚本，因为在此系统上禁止运行脚本"错误，请以管理员身份运行 PowerShell，然后执行：
+
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+然后重新运行安装命令即可。
+
+:::
+
 #### 方案 B：直接安装 Node.js
 
 **下载 Node.js**：https://npmmirror.com/mirrors/node/v24.13.0/node-v24.13.0-x64.msi
