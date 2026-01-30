@@ -108,7 +108,7 @@ graph LR
 
 ## 相关内容
 
-- 详见：[1.1 代码格式演变]
-- 详见：[1.2 技术栈概念]
-- 后续：[1.5 Node.js 环境与包管理]
-- 详见：[第十章 Localhost 与公网访问]
+- 详见：[1.1 代码格式演变](./01-code-formats.md)
+- 详见：[1.2 技术栈概念](./02-tech-stack.md)
+- 后续：[1.5 包管理与项目配置](./05-package-manager-and-config.md)
+- 详见：[第十章 Localhost 与公网访问](../10-localhost-public-access/)

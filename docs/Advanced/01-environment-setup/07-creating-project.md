@@ -235,6 +235,6 @@ pnpm dev
 
 ## 相关内容
 
-- 详见：[1.5 Node.js 环境与包管理](./05-nodejs-and-pnpm.md)
+- 详见：[1.5 包管理与项目配置](./05-package-manager-and-config.md)
 - 详见：[1.8 Localhost 与端口](./08-localhost-and-ports.md)
 - 后续：[第2章 AI调教指南](../02-ai-tuning-guide/)
