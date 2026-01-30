@@ -53,6 +53,18 @@ nvm install lts; nvm use lts; npm config set registry https://registry.npmmirror
 
 > 这条命令安装 Node.js 24 LTS → 配置国内源 → 安装 pnpm → 配置 pnpm 国内源。命令可重复执行。
 
+::: warning PowerShell 执行策略错误？
+
+如果在 PowerShell 中运行安装命令时出现"无法加载脚本，因为在此系统上禁止运行脚本"错误，请以管理员身份运行 PowerShell，然后执行：
+
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+然后重新运行安装命令即可。
+
+:::
+
 #### 方案 B：直接安装 Node.js
 
 **下载 Node.js**：https://npmmirror.com/mirrors/node/v24.13.0/node-v24.13.0-x64.msi
@@ -124,6 +136,12 @@ graph TB
 pnpm 使用**硬链接**让所有项目共享同一份依赖文件，而不是每个项目都复制一份。
 
 ## 核心配置文件
+
+**什么是配置文件？** 配置文件是记录项目元数据的纯文本文件，告诉包管理器这个项目需要什么依赖、如何运行。它们放在项目的**根目录**（最外层文件夹）下。
+
+**为什么每个项目都有？** 因为每个项目依赖的第三方库不同——有的用 React，有的用 Vue；有的需要特定版本，有的需要最新版。配置文件记录了这些差异，确保任何人拿到代码后都能还原出相同的开发环境。
+
+**为什么需要它们？** 想象一下没有配置文件的情况：你下载了一个开源项目，但不知道它需要什么依赖、怎么启动。配置文件解决了这个问题——`pnpm install` 会根据配置自动下载所有依赖，`pnpm dev` 知道如何启动项目。
 
 ### package.json
 
