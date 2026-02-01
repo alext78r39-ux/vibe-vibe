@@ -94,3 +94,8 @@ title: "第十三章：域名解析原理与网络接入"
 2. [备案与访问问题解决](./03-compliance-access.md) → 备案策略、403/404 错误诊断
 
 **说明**：现代部署平台（EdgeOne、Vercel 等）自动提供 HTTPS 证书，绑定域名后自动生效，无需手动配置。
+---
+
+**上一章**：[第十二章：无服务器部署与 CI/CD 自动化](../12-serverless-deploy-cicd/index.md)
+
+**下一章**：[第十四章：云服务器运维与项目部署](../14-vps-ops-deploy/index.md)

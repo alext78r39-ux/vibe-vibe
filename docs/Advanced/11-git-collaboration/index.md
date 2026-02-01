@@ -202,3 +202,9 @@ git status                   # 查看当前状态
 4. [团队工作流最佳实践](./04-team-workflow.md) → 分支策略、PR、Skills 共享规范
 
 **AI 编程时代的 Git**：理解概念和工作流，具体命令告诉 AI 即可。
+
+---
+
+**上一章**：[第十章：Localhost 与公网访问](../10-localhost-public-access/index.md)
+
+**下一章**：[第十二章：无服务器部署与 CI/CD 自动化](../12-serverless-deploy-cicd/index.md)

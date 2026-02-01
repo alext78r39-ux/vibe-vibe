@@ -125,8 +125,16 @@ sudo yum install git -y
 
 此脚本将自动安装 Node.js、pnpm，并配置国内镜像源：
 
+**macOS：**
+
 ```bash
-curl -fsSL https://cnb.cool/vibevibe/scripts/-/git/raw/main/init_git_node.sh | bash
+curl -fsSL https://cnb.cool/vibevibe/scripts/-/git/raw/main/init-node-mac.sh | sed 's/\r$//' | sh && npm install -g pnpm && pnpm config set registry https://registry.npmmirror.com/ && pnpm setup
+```
+
+**Linux：**
+
+```bash
+curl -fsSL https://cnb.cool/vibevibe/scripts/-/git/raw/main/init-node-linux.sh | sed 's/\r$//' | sh
 ```
 
 脚本执行完成后，**请重新打开终端窗口**（或执行 `source ~/.bashrc` / `source ~/.zshrc`）使配置生效。

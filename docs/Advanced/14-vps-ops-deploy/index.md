@@ -185,3 +185,9 @@ title: "第十四章：云服务器运维与项目部署"
 8. **14.5 其他好玩的应用 (./05-cool-apps.md)**
    Umami 网站统计、n8n 自动化工作流、Outline 知识库、Nextcloud 文件存储、Uptime Kuma 监控告警。
 ```
+
+---
+
+**上一章**：[第十三章：域名、DNS 与 HTTPS](../13-domain-dns/index.md)
+
+**下一章**：[第十五章：SEO、分享与数据统计](../15-seo-analytics/index.md)

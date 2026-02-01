@@ -1,7 +1,7 @@
 ---
-title: "第八章：数据持久化与数据库"
+title: "第六章：数据持久化与数据库"
 ---
-# 第八章：数据持久化与数据库
+# 第六章：数据持久化与数据库
 
 
 
@@ -169,18 +169,28 @@ AI 知道在每一层应该加什么校验。你记住"防线不止一道"这个
 ## 小节导航
 
 ```
-- 8.0 领取你的数据库 (./00-get-your-database.md)
+- 6.0 领取你的数据库 (./00-get-your-database.md)
     注册 Neon/Supabase 免费套餐，创建数据库实例，获取连接字符串
 
-- 8.1 数据存储演进 (./01-storage-evolution.md)
+- 6.1 数据存储演进 (./01-storage-evolution.md)
     从 CSV 到 JSON 再到数据库的演进路径，本土化案例：豆瓣电影评分表
 
-- 8.2 数据库基础概念 (./02-database-basics.md)
+- 6.2 数据库基础概念 (./02-database-basics.md)
     表、行、列、主键、外键、关联，本土化案例：美团外卖表关系
 
-- 8.3 如何操作数据库 (./03-database-operations.md)
+- 6.3 如何操作数据库 (./03-database-operations.md)
     认识 Drizzle、Prisma 等 ORM，理解 AI 生成的 CRUD 代码
 
-- 8.4 数据库设计与优化 (./04-database-design.md)
+- 6.4 数据库设计与优化 (./04-database-design.md)
     AI 交叉论证法、索引优化、安全与备份意识，本土化案例：微信读书笔记
 ```
+
+---
+
+
+
+---
+
+**上一章**：[第五章：界面(UI)与交互(UX)](../05-ui-ux/index.md)
+
+**下一章**：[第七章：后端API开发](../07-backend-api/index.md)

@@ -134,3 +134,9 @@ AI模型成本也值得优化。简单任务用便宜的国产模型（如GLM、
 4. [运维基础与成本优化](./04-operations-cost.md) → SRE、可观测性、成本优化
 
 **AI 编程时代的部署**：告诉 AI 目标平台，它会帮你完成配置和部署。
+
+---
+
+**上一章**：[第十一章：Git 版本控制与跨平台协作](../11-git-collaboration/index.md)
+
+**下一章**：[第十三章：域名、DNS 与 HTTPS](../13-domain-dns/index.md)
