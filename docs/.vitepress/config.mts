@@ -1,6 +1,24 @@
 import { defineConfigWithTheme, type HeadConfig, type DefaultTheme } from 'vitepress'
 import { generateSidebar } from 'vitepress-sidebar'
 import { withMermaid } from 'vitepress-plugin-mermaid'
+import timeline from "vitepress-markdown-timeline"
+import { VitePWA } from 'vite-plugin-pwa'
+import { readFile, stat, writeFile } from 'fs/promises'
+import { isAbsolute as isAbsolutePath, join as joinPath, relative as relativePath } from 'path'
+
+// 导入模块化工具
+import {
+  stripFrontmatter,
+  parseSimpleFrontmatter,
+  extractDescriptionFromMarkdown,
+  estimateReadingTime,
+  urlPathForPage,
+  safeJsonLd,
+  escapeXml,
+  safeCdata
+} from './modules/utils'
+import { buildBreadcrumbList } from './modules/seo'
+import { generateRobotsTxt, buildRssXml, extractRssItem, type RssItem } from './modules/feed'
 
 // 全局类型声明：支持 Vite 的 import.meta.env
 declare global {
@@ -15,10 +33,6 @@ declare global {
     env?: ImportMetaEnv
   }
 }
-import timeline from "vitepress-markdown-timeline";
-import { VitePWA } from 'vite-plugin-pwa'
-import { readFile, stat, writeFile } from 'fs/promises'
-import { isAbsolute as isAbsolutePath, join as joinPath, relative as relativePath } from 'path'
 
 const SITE_TITLE = "VibeVibe"
 const SITE_TITLE_FRIENDLY = "Vibe Vibe"  // 用于显示的友好名称
@@ -44,138 +58,6 @@ function resolveSiteUrl(): string {
 }
 
 const SITE_URL = resolveSiteUrl();
-
-function urlPathForPage(relativePath: string): string {
-  const p = relativePath.replace(/\\/g, '/');
-  if (p === 'index.md') return '/';
-  if (p.endsWith('/index.md')) return `/${p.slice(0, -'/index.md'.length)}/`;
-  return `/${p.replace(/\.md$/, '.html')}`;
-}
-
-function stripFrontmatter(markdownSource: string): string {
-  if (!markdownSource.startsWith('---')) return markdownSource;
-  const match = markdownSource.match(/^---\s*\n[\s\S]*?\n---\s*\n/);
-  if (!match) return markdownSource;
-  return markdownSource.slice(match[0].length);
-}
-
-function parseSimpleFrontmatter(markdownSource: string): Record<string, string> {
-  if (!markdownSource.startsWith('---')) return {};
-  const match = markdownSource.match(/^---\s*\n([\s\S]*?)\n---\s*\n/);
-  if (!match) return {};
-
-  const body = match[1];
-  const result: Record<string, string> = {};
-  for (const line of body.split('\n')) {
-    const trimmed = line.trim();
-    if (!trimmed || trimmed.startsWith('#')) continue;
-    const index = trimmed.indexOf(':');
-    if (index <= 0) continue;
-    const key = trimmed.slice(0, index).trim();
-    let value = trimmed.slice(index + 1).trim();
-    value = value.replace(/^['"]|['"]$/g, '').trim();
-    if (key) result[key] = value;
-  }
-  return result;
-}
-
-function stripMarkdown(markdownSource: string): string {
-  let text = stripFrontmatter(markdownSource);
-  text = text.replace(/```[\s\S]*?```/g, ' ');
-  text = text.replace(/`[^`]*`/g, ' ');
-  text = text.replace(/!\[([^\]]*)\]\([^)]+\)/g, '$1');
-  text = text.replace(/\[([^\]]+)\]\([^)]+\)/g, '$1');
-  text = text.replace(/<style[\s\S]*?<\/style>/gi, ' ');
-  text = text.replace(/<script[\s\S]*?<\/script>/gi, ' ');
-  text = text.replace(/<[^>]+>/g, ' ');
-  text = text.replace(/^#{1,6}\s+/gm, '');
-  text = text.replace(/^>\s?/gm, '');
-  text = text.replace(/^\s*[-*+]\s+/gm, '');
-  text = text.replace(/^\s*\d+\.\s+/gm, '');
-  text = text.replace(/\s+/g, ' ').trim();
-  return text;
-}
-
-function truncateText(text: string, maxLength: number): string {
-  const normalized = text.replace(/\s+/g, ' ').trim();
-  if (normalized.length <= maxLength) return normalized;
-  return normalized.slice(0, maxLength).trim();
-}
-
-function extractDescriptionFromMarkdown(markdownSource: string): string | undefined {
-  const text = stripMarkdown(markdownSource);
-  if (!text) return undefined;
-  return truncateText(text, 160);
-}
-
-// 估算阅读时间（分钟）
-function estimateReadingTime(markdownSource: string): number {
-  const text = stripMarkdown(markdownSource);
-  // 中文：200字/分钟，英文：200词/分钟
-  const chineseChars = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
-  const englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
-  return Math.ceil((chineseChars + englishWords) / 200);
-}
-
-function escapeXml(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&apos;');
-}
-
-function safeCdata(text: string): string {
-  return text.replace(/]]>/g, ']]]]><![CDATA[>');
-}
-
-function safeJsonLd(value: unknown): string {
-  return JSON.stringify(value).replace(/</g, '\\u003c');
-}
-
-function displayNameFromPathSegment(segment: string): string {
-  const decoded = decodeURIComponent(segment);
-  const withoutExt = decoded.replace(/\.html$/i, '');
-  return withoutExt.replace(/[-_]+/g, ' ').trim() || decoded;
-}
-
-function buildBreadcrumbList(urlPath: string, fullUrl: string): Record<string, unknown> | undefined {
-  const normalizedPath = urlPath.replace(/\?.*$/, '').replace(/#.*$/, '');
-  const trimmed = normalizedPath.replace(/^\/+|\/+$/g, '');
-  const parts = trimmed ? trimmed.split('/').filter(Boolean) : [];
-  if (parts.length === 0) return undefined;
-
-  const originMatch = fullUrl.match(/^(https?:\/\/[^/]+)/i);
-  const origin = originMatch ? originMatch[1] : SITE_URL;
-  const elements: Array<Record<string, unknown>> = [
-    {
-      '@type': 'ListItem',
-      position: 1,
-      name: '首页',
-      item: `${origin}/`
-    }
-  ];
-
-  let current = '';
-  for (let i = 0; i < parts.length; i += 1) {
-    current += `/${parts[i]}`;
-    const isLast = i === parts.length - 1;
-    const itemUrl = isLast ? fullUrl : `${origin}${current}/`;
-    elements.push({
-      '@type': 'ListItem',
-      position: i + 2,
-      name: displayNameFromPathSegment(parts[i]),
-      item: itemUrl
-    });
-  }
-
-  return {
-    '@type': 'BreadcrumbList',
-    itemListElement: elements
-  };
-}
-
 
 export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
   lang: 'zh-CN',
