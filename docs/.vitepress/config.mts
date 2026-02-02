@@ -532,8 +532,8 @@ Allow: /
     const channelDescription = safeCdata(SITE_DESCRIPTION);
     const channelLanguage = 'zh-CN';
     const channelLastBuildDate = escapeXml(lastBuildDate.toUTCString());
-    const channelManagingEditor = 'Eyre (eyre@example.com)';
-    const channelWebMaster = 'Eyre (eyre@example.com)';
+    const channelManagingEditor = 'Eyre (contact@vibevibe.cn)';
+    const channelWebMaster = 'Eyre (contact@vibevibe.cn)';
     const channelCategory = '编程教程';
 
     const rssXml = [
