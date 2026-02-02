@@ -108,6 +108,15 @@ function extractDescriptionFromMarkdown(markdownSource: string): string | undefi
   return truncateText(text, 160);
 }
 
+// 估算阅读时间（分钟）
+function estimateReadingTime(markdownSource: string): number {
+  const text = stripMarkdown(markdownSource);
+  // 中文：200字/分钟，英文：200词/分钟
+  const chineseChars = (text.match(/[\u4e00-\u9fa5]/g) || []).length;
+  const englishWords = (text.match(/[a-zA-Z]+/g) || []).length;
+  return Math.ceil((chineseChars + englishWords) / 200);
+}
+
 function escapeXml(text: string): string {
   return text
     .replace(/&/g, '&amp;')
@@ -177,21 +186,40 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
   srcExclude: ['**/docs/**'],
   
   head: [
+    // 搜索引擎验证
     ['meta', { name: 'baidu-site-verification', content: 'codeva-DyDGMBlEJg' }],
+    ['meta', { name: 'google-site-verification', content: 'your-google-verification-code' }],
+    ['meta', { name: 'msvalidate.01', content: 'your-bing-verification-code' }],
+
+    // SEO 基础标签
     ['meta', { name: 'keywords', content: 'Vibe Coding, 全栈开发, Next.js, TypeScript, React, Prisma, AI编程, Cursor, Claude' }],
     ['meta', { name: 'author', content: 'Eyre' }],
     ['meta', { name: 'robots', content: 'index,follow,max-image-preview:large,max-snippet:-1,max-video-preview:-1' }],
+
+    // 移动端和 PWA 配置
     ['meta', { name: 'theme-color', content: '#ffffff' }],
     ['meta', { name: 'mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-capable', content: 'yes' }],
     ['meta', { name: 'apple-mobile-web-app-status-bar-style', content: 'default' }],
     ['meta', { name: 'apple-mobile-web-app-title', content: SITE_TITLE }],
+
+    // Open Graph 基础标签
     ['meta', { property: 'og:type', content: 'website' }],
+    ['meta', { property: 'og:site_name', content: SITE_TITLE_FRIENDLY }],
+
+    // 微信分享专用标签
+    ['meta', { name: 'weixin:description', content: SITE_DESCRIPTION }],
+
+    // 图标
     ['link', { rel: 'icon', href: '/logo.png', type: 'image/png' }],
     ['link', { rel: 'shortcut icon', href: '/logo.png', type: 'image/png' }],
     ['link', { rel: 'apple-touch-icon', href: '/logo.png' }],
+
+    // RSS 和 Manifest
     ['link', { rel: 'alternate', type: 'application/rss+xml', title: SITE_TITLE, href: '/rss.xml' }],
     ['link', { rel: 'manifest', href: '/manifest.webmanifest' }],
+
+    // 统计脚本
     [
       'script',
       {
@@ -222,14 +250,28 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
 
     const urlPath = urlPathForPage(pageData.relativePath);
     const breadcrumbList = buildBreadcrumbList(urlPath, url);
+
+    // 判断是否为文章类型（非首页且在文档目录中）
+    const isArticle = pageData.relativePath !== 'index.md' &&
+                      (pageData.relativePath.startsWith('Basic/') ||
+                       pageData.relativePath.startsWith('Advanced/') ||
+                       pageData.relativePath.startsWith('Practice/'));
+
+    // 增强的结构化数据
     const jsonLdGraph: Array<Record<string, unknown>> = [
       {
         '@type': 'WebSite',
         '@id': `${SITE_URL}/#website`,
         url: SITE_URL,
         name: SITE_TITLE,
+        alternateName: SITE_TITLE_FRIENDLY,
         description: SITE_DESCRIPTION,
-        inLanguage: 'zh-CN'
+        inLanguage: 'zh-CN',
+        publisher: {
+          '@type': 'Organization',
+          name: 'Datawhale',
+          url: 'https://github.com/datawhalechina'
+        }
       },
       {
         '@type': 'WebPage',
@@ -238,29 +280,101 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
         name: title,
         description,
         isPartOf: { '@id': `${SITE_URL}/#website` },
-        inLanguage: 'zh-CN'
+        inLanguage: 'zh-CN',
+        ...(pageData.readingTime && {
+          timeRequired: `PT${pageData.readingTime}M`
+        })
       }
     ];
+
+    // 如果是文章类型，添加 Article 结构化数据
+    if (isArticle) {
+      const datePublished = typeof frontmatter?.date === 'string' ? frontmatter.date : undefined;
+      const dateModified = typeof frontmatter?.updated === 'string' ? frontmatter.updated : undefined;
+
+      jsonLdGraph.push({
+        '@type': 'Article',
+        '@id': `${url}#article`,
+        url,
+        headline: title,
+        description,
+        isPartOf: { '@id': `${SITE_URL}/#website` },
+        inLanguage: 'zh-CN',
+        ...(datePublished && { datePublished }),
+        ...(dateModified && { dateModified }),
+        author: {
+          '@type': 'Person',
+          name: 'Eyre'
+        },
+        publisher: {
+          '@type': 'Organization',
+          name: 'Datawhale',
+          logo: {
+            '@type': 'ImageObject',
+            url: `${SITE_URL}/logo.png`
+          }
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id': url
+        }
+      });
+    }
+
     if (breadcrumbList) jsonLdGraph.push(breadcrumbList);
+
     const jsonLd = {
       '@context': 'https://schema.org',
       '@graph': jsonLdGraph
     };
 
-    return [
+    // 增强的 meta 标签
+    const headConfigs: HeadConfig[] = [
       ['link', { rel: 'canonical', href: url }],
+
+      // Open Graph 基础标签
       ['meta', { property: 'og:site_name', content: SITE_TITLE_FRIENDLY }],
       ['meta', { property: 'og:locale', content: 'zh_CN' }],
       ['meta', { property: 'og:url', content: url }],
       ['meta', { property: 'og:title', content: title }],
       ['meta', { property: 'og:description', content: description }],
       ['meta', { property: 'og:image', content: image }],
+      ['meta', { property: 'og:image:width', content: '1200' }],
+      ['meta', { property: 'og:image:height', content: '630' }],
+      ['meta', { property: 'og:image:alt', content: title }],
+      ...(isArticle ? [
+        ['meta', { property: 'og:type', content: 'article' }],
+        ['meta', { property: 'article:published_time', content: new Date().toISOString() }],
+        ['meta', { property: 'article:author', content: 'Eyre' }],
+        ['meta', { property: 'article:section', content: '编程教程' }]
+      ] : [
+        ['meta', { property: 'og:type', content: 'website' }]
+      ]),
+
+      // Twitter Card
       ['meta', { name: 'twitter:card', content: 'summary_large_image' }],
+      ['meta', { name: 'twitter:site', content: '@datawhalechina' }],
+      ['meta', { name: 'twitter:creator', content: '@eyre' }],
       ['meta', { name: 'twitter:title', content: title }],
       ['meta', { name: 'twitter:description', content: description }],
       ['meta', { name: 'twitter:image', content: image }],
+      ['meta', { name: 'twitter:image:alt', content: title }],
+
+      // 微信分享专用标签
+      ['meta', { name: 'weixin:title', content: title }],
+      ['meta', { name: 'weixin:description', content: description }],
+      ['meta', { name: 'weixin:image', content: image }],
+
+      // 其他社交平台
+      ['meta', { property: 'weibo:webpage:title', content: title }],
+      ['meta', { property: 'weibo:webpage:description', content: description }],
+      ['meta', { property: 'weibo:webpage:image', content: image }],
+
+      // 结构化数据
       ['script', { type: 'application/ld+json' }, safeJsonLd(jsonLd)],
     ];
+
+    return headConfigs;
   },
 
   transformPageData: async (pageData, ctx) => {
@@ -271,17 +385,20 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
 
     const frontmatter = pageData.frontmatter;
     const frontmatterDescription = typeof frontmatter?.description === 'string' ? frontmatter.description : undefined;
-    if (frontmatterDescription) return;
-    if (pageData.description) return;
-
     const relativePath = pageData.relativePath;
     const fullPath = joinPath(ctx.siteConfig.srcDir, relativePath);
 
     try {
       const source = await readFile(fullPath, 'utf-8');
-      const description = extractDescriptionFromMarkdown(source);
+
+      // 提取或生成描述
+      const description = frontmatterDescription || extractDescriptionFromMarkdown(source);
       if (!description) return;
-      return { description };
+
+      // 计算阅读时间
+      const readingTime = estimateReadingTime(source);
+
+      return { description, readingTime };
     } catch (error) {
       // 记录错误但不中断构建
       console.warn(`Failed to process page data for ${relativePath}:`, error);
@@ -290,9 +407,30 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
   },
 
   buildEnd: async (siteConfig) => {
+    // 优化 robots.txt
     const sitemapLine = SITE_URL ? `\nSitemap: ${SITE_URL}/sitemap.xml\n` : '\n';
-    const content = `User-agent: *\nAllow: /${sitemapLine}`;
-    await writeFile(joinPath(siteConfig.outDir, 'robots.txt'), content, 'utf-8');
+    const robotsContent = `User-agent: *
+Allow: /
+Crawl-delay: 1${sitemapLine}
+
+# 禁止爬取缓存和临时文件
+Disallow: /cache/
+Disallow: /.vitepress/cache/
+
+# 禁止爬取搜索结果页（如果有）
+Disallow: /search?
+
+# 允许主要搜索引擎
+User-agent: Googlebot
+Allow: /
+
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Slurp
+Allow: /
+`;
+    await writeFile(joinPath(siteConfig.outDir, 'robots.txt'), robotsContent, 'utf-8');
 
     const pages = siteConfig.pages
       .map((page) => (isAbsolutePath(page) ? relativePath(siteConfig.srcDir, page) : page))
@@ -305,6 +443,9 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
       link: string;
       description: string;
       pubDate: Date;
+      category?: string;
+      author?: string;
+      readingTime?: number;
     };
 
     const items: RssItem[] = [];
@@ -331,7 +472,25 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
         const pubDateCandidate = frontmatter.date ? new Date(frontmatter.date) : undefined;
         const pubDate = pubDateCandidate && !Number.isNaN(pubDateCandidate.getTime()) ? pubDateCandidate : fileStats.mtime;
 
-        items.push({ title, link, description, pubDate });
+        // 提取分类信息
+        let category: string | undefined;
+        if (page.startsWith('Basic/')) category = '基础篇';
+        else if (page.startsWith('Advanced/')) category = '进阶篇';
+        else if (page.startsWith('Practice/')) category = '实践篇';
+        else if (page.startsWith('Articles/')) category = '优质文章';
+
+        // 计算阅读时间
+        const readingTime = estimateReadingTime(source);
+
+        items.push({
+          title,
+          link,
+          description,
+          pubDate,
+          category,
+          author: 'Eyre',
+          readingTime
+        });
       } catch (error) {
         // 记录错误但不中断构建
         console.warn(`Failed to process ${page} for RSS feed:`, error);
@@ -349,6 +508,10 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
         const link = escapeXml(item.link);
         const pubDate = escapeXml(item.pubDate.toUTCString());
         const description = safeCdata(item.description);
+        const category = item.category ? `<category>${escapeXml(item.category)}</category>` : '';
+        const author = item.author ? `<author>${escapeXml(item.author)}</author>` : '';
+        const readingTime = item.readingTime ? `<docs:readingTime>${item.readingTime}</docs:readingTime>` : '';
+
         return [
           '<item>',
           `<title>${title}</title>`,
@@ -356,6 +519,9 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
           `<guid isPermaLink="true">${link}</guid>`,
           `<pubDate>${pubDate}</pubDate>`,
           `<description><![CDATA[${description}]]></description>`,
+          category,
+          author,
+          readingTime,
           '</item>'
         ].join('');
       })
@@ -366,16 +532,25 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
     const channelDescription = safeCdata(SITE_DESCRIPTION);
     const channelLanguage = 'zh-CN';
     const channelLastBuildDate = escapeXml(lastBuildDate.toUTCString());
+    const channelManagingEditor = 'Eyre (eyre@example.com)';
+    const channelWebMaster = 'Eyre (eyre@example.com)';
+    const channelCategory = '编程教程';
 
     const rssXml = [
       '<?xml version="1.0" encoding="UTF-8"?>',
-      '<rss version="2.0">',
+      '<rss version="2.0" xmlns:docs="http://example.com/docs">',
       '<channel>',
       `<title>${channelTitle}</title>`,
       `<link>${channelLink}</link>`,
       `<description><![CDATA[${channelDescription}]]></description>`,
       `<language>${channelLanguage}</language>`,
       `<lastBuildDate>${channelLastBuildDate}</lastBuildDate>`,
+      `<managingEditor>${channelManagingEditor}</managingEditor>`,
+      `<webMaster>${channelWebMaster}</webMaster>`,
+      `<category>${channelCategory}</category>`,
+      `<docs>https://www.rssboard.org/rss-specification</docs>`,
+      `<generator>VibeVibe RSS Generator</generator>`,
+      `<ttl>60</ttl>`,  // 缓存时间（分钟）
       rssItemsXml,
       '</channel>',
       '</rss>'
