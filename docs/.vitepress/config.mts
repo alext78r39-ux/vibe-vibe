@@ -1,13 +1,27 @@
 import { defineConfigWithTheme, type HeadConfig, type DefaultTheme } from 'vitepress'
 import { generateSidebar } from 'vitepress-sidebar'
 import { withMermaid } from 'vitepress-plugin-mermaid'
-// @ts-ignore
+
+// 全局类型声明：支持 Vite 的 import.meta.env
+declare global {
+  interface ImportMetaEnv {
+    DEV?: boolean
+    MODE?: string
+    BASE_URL?: string
+    PROD?: boolean
+    SSR?: boolean
+  }
+  interface ImportMeta {
+    env?: ImportMetaEnv
+  }
+}
 import timeline from "vitepress-markdown-timeline";
 import { VitePWA } from 'vite-plugin-pwa'
 import { readFile, stat, writeFile } from 'fs/promises'
 import { isAbsolute as isAbsolutePath, join as joinPath, relative as relativePath } from 'path'
 
 const SITE_TITLE = "VibeVibe"
+const SITE_TITLE_FRIENDLY = "Vibe Vibe"  // 用于显示的友好名称
 const SITE_DESCRIPTION = "Vibe Coding 全栈实战教程 - 从 Next.js 到 AI 辅助开发，用 Vibe Coding 的方式重塑你的编程工作流。涵盖零基础入门、全栈开发、数据库、部署运维等核心主题。"
 const SITE_URL_FALLBACK = 'https://www.vibevibe.cn'
 
@@ -30,25 +44,6 @@ function resolveSiteUrl(): string {
 }
 
 const SITE_URL = resolveSiteUrl();
-
-type BroadcastRule = {
-  paths: string[]
-  text?: string
-  color?: string
-}
-
-type BroadcastConfig = {
-  default?: {
-    text: string
-    color: string
-  }
-  rules?: BroadcastRule[]
-  exclude?: string[]
-}
-
-type ThemeConfigWithBroadcast = DefaultTheme.Config & {
-  broadcast?: BroadcastConfig
-}
 
 function urlPathForPage(relativePath: string): string {
   const p = relativePath.replace(/\\/g, '/');
@@ -173,7 +168,7 @@ function buildBreadcrumbList(urlPath: string, fullUrl: string): Record<string, u
 }
 
 
-export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
+export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
   lang: 'zh-CN',
   title: SITE_TITLE,
   description: SITE_DESCRIPTION,
@@ -213,7 +208,7 @@ export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
     if (!SITE_URL) return;
 
     const url = `${SITE_URL}${urlPathForPage(pageData.relativePath)}`;
-    const frontmatter = pageData.frontmatter as Record<string, unknown> | undefined;
+    const frontmatter = pageData.frontmatter;
     const frontmatterTitle = typeof frontmatter?.title === 'string' ? frontmatter.title : undefined;
     const frontmatterDescription =
       typeof frontmatter?.description === 'string' ? frontmatter.description : undefined;
@@ -254,7 +249,7 @@ export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
 
     return [
       ['link', { rel: 'canonical', href: url }],
-      ['meta', { property: 'og:site_name', content: 'Vibe Vibe' }],
+      ['meta', { property: 'og:site_name', content: SITE_TITLE_FRIENDLY }],
       ['meta', { property: 'og:locale', content: 'zh_CN' }],
       ['meta', { property: 'og:url', content: url }],
       ['meta', { property: 'og:title', content: title }],
@@ -269,7 +264,12 @@ export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
   },
 
   transformPageData: async (pageData, ctx) => {
-    const frontmatter = pageData.frontmatter as Record<string, unknown> | undefined;
+    // 只在生产构建时执行，避免影响开发服务器性能
+    // VitePress 的 import.meta.env 在构建时可用
+    const isDev = import.meta.env?.DEV ?? process.env.NODE_ENV !== 'production';
+    if (isDev) return;
+
+    const frontmatter = pageData.frontmatter;
     const frontmatterDescription = typeof frontmatter?.description === 'string' ? frontmatter.description : undefined;
     if (frontmatterDescription) return;
     if (pageData.description) return;
@@ -282,7 +282,9 @@ export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
       const description = extractDescriptionFromMarkdown(source);
       if (!description) return;
       return { description };
-    } catch {
+    } catch (error) {
+      // 记录错误但不中断构建
+      console.warn(`Failed to process page data for ${relativePath}:`, error);
       return;
     }
   },
@@ -330,7 +332,9 @@ export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
         const pubDate = pubDateCandidate && !Number.isNaN(pubDateCandidate.getTime()) ? pubDateCandidate : fileStats.mtime;
 
         items.push({ title, link, description, pubDate });
-      } catch {
+      } catch (error) {
+        // 记录错误但不中断构建
+        console.warn(`Failed to process ${page} for RSS feed:`, error);
         continue;
       }
     }
@@ -417,7 +421,7 @@ export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
         },
         manifest: {
           name: SITE_TITLE,
-          short_name: 'Vibe Vibe',
+          short_name: SITE_TITLE_FRIENDLY,
           description: SITE_DESCRIPTION,
           theme_color: '#ffffff',
           background_color: '#ffffff',
@@ -455,7 +459,7 @@ export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
 
   themeConfig: {
     logo: '/logo.png',
-    siteTitle: 'Vibe Vibe',
+    siteTitle: SITE_TITLE_FRIENDLY,
     
     nav: [
       { text: '首页', link: '/' },
@@ -497,7 +501,6 @@ export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
           { text: '15-SEO、分享与数据统计', link: '/Advanced/15-seo-analytics/' },
           { text: '16-用户反馈与产品迭代', link: '/Advanced/16-user-feedback-iteration/' },
           { text: 'Next Level', link: '/Advanced/99-next-level/' },
-          { text: '旧进阶篇（完整）', link: '/Advanced-old/' },
         ]
       },
 
@@ -540,7 +543,7 @@ export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
       frontmatterOrderDefaultValue: 9999,
       
       manualSortFileNameByPriority: [
-        'Basic', 'Advanced', 'Advanced-old', 'Practice', 'Articles',
+        'Basic', 'Advanced', 'Practice', 'Articles',
         'Basic/00-preface', 'Basic/01-awakening', 'Basic/02-mindset', 'Basic/03-technique',
         'Basic/04-practice-0-to-1', 'Basic/05-advanced', 'Basic/06-learning-paths',
         'Basic/99-appendix', 'Basic/100-epilogue', 'Basic/101-next-part',
@@ -616,18 +619,5 @@ export default withMermaid(defineConfigWithTheme<ThemeConfigWithBroadcast>({
     //   message: '',
     //   copyright: ''
     // },
-
-    // 广播横幅配置
-    broadcast: {
-      // 默认配置（全局生效，除非被 exclude 排除）
-      default: {
-        text: '🚧 抢先预览版，内容建设中，不代表最终品质 🚧',
-        color: '#e6a23c'
-      },
-      // 按路径自定义配置（支持 glob 模式，匹配到的路径会覆盖 default）
-      rules: [],
-      // 排除路径（这些页面不显示横幅）
-      exclude: []
-    }
   }
 }))

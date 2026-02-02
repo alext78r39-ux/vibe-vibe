@@ -19,6 +19,7 @@ title: "第五章：界面(UI)与交互(UX)"
 
 - **CSS (层叠样式表)**：如果说 HTML 是网页的**骨架**（素颜），那 CSS 就是**化妆品**。它决定了按钮是圆角还是直角，背景是渐变还是纯色。
 - **组件 (Component)**：现代网页不是画出来的，而是**搭**出来的。导航栏、按钮、输入框，这些都是预先做好的**乐高积木**。你不需要每次都手写一个"带圆角、有阴影、鼠标悬停变色的红色按钮"，而是直接拿来一个叫做 `<Button />` 的积木就能用。
+- **布局 (Layout)**：元素怎么摆放在页面上，由布局方式决定。现代网页主要用 Flexbox 和 Grid。Flexbox 适合一维布局（行或列），比如导航栏、卡片列表；Grid 适合二维布局（行+列），比如整个页面框架。你只需要告诉 AI"把这三个按钮横向排列"或"把页面分成左右两列"，具体属性让它处理。
 
 
 
@@ -107,28 +108,20 @@ title: "第五章：界面(UI)与交互(UX)"
 
 ### Skills 资源
 
-在 AI 时代，Claude Code 有一个强大的功能叫做 **Skills（技能包）**。你可以把 Skills 理解为 AI 的"专业技能扩展包"——给 AI 装上特定领域的知识库，让它成为那个领域的专家。
+你发现 AI 生成的代码虽然能跑，但设计感总是差一点。这时候如果能给 AI 装上一个"设计专家"的脑子，它就会生成更专业的代码。
 
-UI 开发相关的 Skills 能让 AI 更懂设计、更懂前端规范。比如装上 `frontend-design` Skill 后，AI 会生成更符合现代设计标准的代码；装上 `web-design-guidelines` Skill 后，AI 会主动检查无障碍访问等设计规范。
 
-**Skills 官网**：https://skills.sh —— 浏览和发现所有可用的 Skills
-
-**项目 Skills 资源**：本项目仓库的 [`.claude/skills/`](https://cnb.cool/nfeyre/default-dev-env/-/tree/main/.claude/skills) 目录整理了官方推荐 Skills。
-
-**常用的 UI 相关 Skills**：
+常用的 UI/UX 相关 Skills：
 
 | Skill 名称 | 用途 | 安装命令 |
 |-----------|------|---------|
-| `frontend-design` | 高质量前端界面设计 | `npx skills add anthropics/skills/frontend-design` |
-| `web-design-guidelines` | Web 界面设计规范审查 | `npx skills add vercel-labs/agent-skills/web-design-guidelines` |
-| `webapp-testing` | 使用 Playwright 测试网页 | `npx skills add anthropics/skills/webapp-testing` |
-| `web-artifacts-builder` | 创建复杂的 React/Tailwind UI | `npx skills add anthropics/skills/web-artifacts-builder` |
+| `frontend-design` | 高质量前端界面设计 | `npx skills add https://github.com/anthropics/skills --skill frontend-design` |
+| `web-design-guidelines` | Web 界面设计规范审查 | `npx skills add https://github.com/vercel-labs/agent-skills --skill web-design-guidelines` |
+| `ui-ux-pro-max` | UI/UX 专业设计指南 | `npx skills add https://github.com/nextlevelbuilder/ui-ux-pro-max-skill --skill ui-ux-pro-max` |
+| `building-native-ui` | 原生移动端 UI 开发 | `npx skills add https://github.com/expo/skills --skill building-native-ui` |
+| `audit-website` | 网站 UI/UX 审计 | `npx skills add https://github.com/squirrelscan/skills --skill audit-website` |
 
-**如何使用 Skills**：
-
-告诉 AI "使用 frontend-design Skill 来创建这个组件"，或者 "让 web-design-guidelines Skill 帮我审查这个页面"。
-
-你不需要自己写代码细节，只需要描述需求，AI 会调用对应的 Skill 来完成任务。这就是 VibeCoding 的核心：**你负责方向，AI 负责实现**。
+安装和使用方法详见 **https://skills.sh**
 
 ---
 
@@ -140,16 +133,19 @@ UI 开发相关的 Skills 能让 AI 更懂设计、更懂前端规范。比如�
 - 5.0 Skills 资源 (./00-skills-resources.md) 🟢
     UI 开发相关的 Skills 资源介绍，以及如何让 AI 更懂设计规范
 
-- 5.1 前端设计 AI 工具箱 (./01-ai-design-tools.md) 🟡
-    除了 Claude Code，还有哪些专门做 UI 的 AI 工具？什么时候用哪个？
+- 5.1 AI 设计工具 (./01-ai-design-tools.md) 🟡
+    v0.dev、Figma、Framer AI...这些专门做 UI 的 AI 工具，什么时候用？
 
-- 5.2 动画与交互库 (./02-animation-libraries.md) 🟡
+- 5.2 组件库 (./02-component-libraries.md) 🟡
+    shadcn/ui、Ant Design、Material-UI...这些现成的积木，什么时候用哪个？
+
+- 5.3 动画与交互库 (./03-animation-libraries.md) 🟡
     Framer Motion、GSAP、Three.js...让页面"动"起来的选项
 
-- 5.3 UI 风格与灵感 (./03-ui-inspiration.md) 🟡
+- 5.4 UI 风格与灵感 (./04-ui-inspiration.md) 🟡
     Awwwards、Dribbble、Mobgin...去哪里找参考？如何向 AI 描述一种风格？
 
-- 5.4 让页面更高级的效果 (./04-advanced-effects.md) 🟡
+- 5.5 让页面更高级的效果 (./05-advanced-effects.md) 🟡
     视差滚动、3D 翻转、骨架屏...那些让页面显得"高级"的效果，以及对应的提示词
 ```
 ---

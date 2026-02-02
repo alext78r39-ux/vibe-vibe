@@ -1,5 +1,5 @@
 ---
-title: "1.0 快速开始"
+title: "快速开始"
 description: "5 分钟完成环境安装，开始 AI 编程"
 chapter: "第一章"
 ---
