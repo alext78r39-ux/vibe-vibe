@@ -16,6 +16,7 @@ import CodeFormatEvolution from './components/01-1-CodeFormatEvolution.vue'
 import TechStackLayers from './components/01-1-TechStackArchitecture.vue'
 import BrowserServerFlow from './components/01-1-BrowserServerFlow.vue'
 import TerminalTroubleshoot from './components/01-1-TerminalTroubleshoot.vue'
+import ReadingProgress from './components/01-2-ReadingProgress.vue'
 
 // 引入时间线样式
 import "vitepress-markdown-timeline/dist/theme/index.css";
@@ -114,12 +115,12 @@ export default {
     app.component('BrowserServerFlow', BrowserServerFlow)
     app.component('TerminalTroubleshoot', TerminalTroubleshoot)
   },
-  
+
   // 1. 布局扩展：注入 Giscus 评论
   Layout: () => {
     const route = useRoute()
     const { frontmatter, isDark } = useData();
-    
+
     return h(DefaultTheme.Layout, null, {
       'layout-top': () => {
         return h('div', {
@@ -190,6 +191,9 @@ export default {
         }
 
         return h('div', null, children)
+      },
+      'layout-bottom': () => {
+        return h(ReadingProgress)
       }
     })
   },
@@ -197,7 +201,7 @@ export default {
   // 2. 增强功能：图片放大
   setup() {
     const route = useRoute()
-    
+
     const initZoom = () => {
       // 给主要内容区的图片添加放大功能，排除 logo 等
       // background: var(--vp-c-bg) 确保背景色适应深色模式
@@ -206,7 +210,7 @@ export default {
 
     onMounted(() => {
       initZoom()
-      
+
       // 动态计算 Banner 高度并设置 CSS 变量
       const updateBannerHeight = () => {
         const banner = document.querySelector('.info-banner')
@@ -215,7 +219,7 @@ export default {
           document.documentElement.style.setProperty('--vp-layout-top-height', `${height}px`)
         }
       }
-      
+
       updateBannerHeight()
       window.addEventListener('resize', updateBannerHeight)
     })
