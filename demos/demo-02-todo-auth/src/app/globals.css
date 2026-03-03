@@ -1,0 +1,288 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #f59e0b;
+  --color-primary-hover: #d97706;
+  --color-primary-dim: rgba(245, 158, 11, 0.15);
+  --color-primary-glow: rgba(245, 158, 11, 0.25);
+  --color-danger: #ef4444;
+  --color-success: #22c55e;
+  --color-surface: #0c0c10;
+  --color-surface-card: rgba(255, 255, 255, 0.04);
+  --color-surface-card-hover: rgba(255, 255, 255, 0.06);
+  --color-surface-elevated: rgba(255, 255, 255, 0.08);
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-focus: rgba(245, 158, 11, 0.4);
+  --color-text: #e4e4e7;
+  --color-text-muted: #71717a;
+  --color-text-heading: #fafafa;
+  --color-check: #22c55e;
+  --font-sans: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+}
+
+body {
+  background-color: var(--color-surface);
+  background-image:
+    radial-gradient(circle at 30% 20%, rgba(245, 158, 11, 0.04) 0%, transparent 50%),
+    radial-gradient(circle at 70% 80%, rgba(139, 92, 246, 0.03) 0%, transparent 50%);
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 24px 24px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+main {
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Focus visible ring ── */
+*:focus-visible {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.glass-card {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(12px);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.02),
+    0 4px 24px rgba(0, 0, 0, 0.3);
+  transition: all 0.2s ease;
+}
+
+.glass-card:hover {
+  background: var(--color-surface-card-hover);
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.04),
+    0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.input-dark {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--color-border);
+  color: var(--color-text);
+  transition: all 0.25s ease;
+}
+
+.input-dark::placeholder {
+  color: var(--color-text-muted);
+}
+
+.input-dark:focus {
+  border-color: var(--color-border-focus);
+  box-shadow: 0 0 0 3px var(--color-primary-dim);
+  outline: none;
+}
+
+.btn-glow {
+  background: linear-gradient(135deg, var(--color-primary) 0%, #e67e22 100%);
+  box-shadow: 0 2px 12px var(--color-primary-glow);
+  transition: all 0.2s ease;
+}
+
+.btn-glow:hover {
+  box-shadow: 0 4px 20px var(--color-primary-glow);
+  transform: translateY(-1px);
+}
+
+.progress-bar-dark {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 999px;
+  overflow: hidden;
+  height: 3px;
+}
+
+.progress-fill-dark {
+  background: linear-gradient(90deg, var(--color-primary), #fbbf24);
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── cmdk command palette ── */
+[cmdk-dialog] {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 20vh;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+[cmdk-dialog] > [cmdk-root] {
+  width: 100%;
+  max-width: 28rem;
+  background: #1c1c20;
+  border: 1px solid var(--color-border);
+  border-radius: 1rem;
+  overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+
+.cmd-input {
+  width: 100%;
+  padding: 0.875rem 1rem;
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text);
+  font-size: 0.875rem;
+  outline: none;
+}
+
+.cmd-input::placeholder {
+  color: var(--color-text-muted);
+}
+
+.cmd-list {
+  max-height: 18rem;
+  overflow: auto;
+  padding: 0.5rem;
+}
+
+.cmd-empty {
+  padding: 2rem 1rem;
+  text-align: center;
+  color: var(--color-text-muted);
+  font-size: 0.8rem;
+}
+
+.cmd-group {
+  padding: 0.25rem 0;
+}
+
+[cmdk-group-heading] {
+  padding: 0.375rem 0.5rem;
+  font-size: 0.65rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.cmd-item {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.5rem;
+  font-size: 0.8rem;
+  color: var(--color-text);
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cmd-item[data-selected="true"] {
+  background: var(--color-surface-elevated);
+}
+
+/* ── react-day-picker dark overrides ── */
+.rdp-dark {
+  --rdp-accent-color: var(--color-primary);
+  --rdp-accent-background-color: var(--color-primary-dim);
+}
+
+.rdp-dark .rdp-day {
+  color: var(--color-text);
+  font-size: 0.75rem;
+}
+
+.rdp-dark .rdp-caption_label {
+  color: var(--color-text-heading);
+  font-size: 0.8rem;
+}
+
+.rdp-dark .rdp-head_cell {
+  color: var(--color-text-muted);
+  font-size: 0.65rem;
+}
+
+.rdp-dark .rdp-button:hover:not([disabled]) {
+  background: var(--color-surface-elevated);
+}
+
+.rdp-dark .rdp-nav_button {
+  color: var(--color-text-muted);
+}
+
+/* ── Teaching Guide ── */
+.teaching-toggle {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.2s ease;
+}
+
+.teaching-toggle:hover {
+  background: var(--color-surface-card-hover);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.teaching-card {
+  background: var(--color-surface-card);
+  border: 1px solid var(--color-border);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.15);
+}
+
+.teaching-lib-tag {
+  background: var(--color-primary-dim);
+  color: var(--color-primary);
+}
+
+.teaching-try-tag {
+  background: rgba(245, 158, 11, 0.06);
+  color: var(--color-text);
+  border: 1px dashed var(--color-border);
+}
+
+.teaching-label {
+  padding: 2px 8px;
+  border-left: 2px solid var(--color-primary);
+  border-radius: 0 4px 4px 0;
+  background: var(--color-primary-dim);
+}
+
+.sidebar-panel {
+  background: #0e0e12;
+  background-image:
+    radial-gradient(circle at 50% 0%, rgba(245, 158, 11, 0.04) 0%, transparent 60%);
+}
+
+.sidebar-prompt {
+  background: rgba(245, 158, 11, 0.06);
+  border: 1px solid rgba(245, 158, 11, 0.12);
+  color: var(--color-text);
+}
+
+.sidebar-verify {
+  background: rgba(34, 197, 94, 0.06);
+  border: 1px solid rgba(34, 197, 94, 0.15);
+  color: var(--color-text);
+}
+
+.teaching-workflow-tip {
+  background: rgba(99, 102, 241, 0.08);
+  border: 1px solid rgba(99, 102, 241, 0.15);
+}

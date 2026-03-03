@@ -37,6 +37,13 @@ ai-write-guide
 docs/docs
 docs/dev-dist
 nano-api-test/
+# 旧 demo 位置（已迁移到 /demos）
+docs/Advanced/demo/
+
+# Demo 项目构建产物
+demos/*/node_modules
+demos/*/.next
+demos/*/.env
 
 # 内部文档（不公开）
 VibeVibe 项目协作与开发指南.md
