@@ -7,6 +7,7 @@ chapter: "第一章"
 # 1.4 Terminal 终端入门
 
 > **阅读完本节后，你将会收获：**
+>
 > - 掌握终端的基本操作（打开、文件导航、命令执行）
 > - 理解终端、Shell、命令行的区别
 > - 掌握终端快捷键和复制粘贴操作
@@ -56,10 +57,12 @@ graph TB
 ### 打开终端
 
 **Mac**：
+
 - 按 `Command + Space`，输入 "Terminal"
 - 或在 Finder → 应用程序 → 实用工具 → 终端
 
 **Windows**：
+
 - 按 `Win + R`，输入 `powershell` 或 `Windows Terminal`
 - 或右键文件夹 → "在终端中打开"
 
@@ -81,10 +84,12 @@ PS C:\Users\user>    # Windows PowerShell 的提示符是 >
 ### 复制粘贴操作
 
 **Windows PowerShell**：
+
 - **粘贴**：右键单击窗口（直接粘贴，Ctrl+V 可能不生效）
 - **复制**：选中文字后右键
 
 **Mac Terminal**：
+
 - **复制**：`Command + C`
 - **粘贴**：`Command + V`
 - **从其他地方粘贴**：`Command + Shift + V`（有时需要）
@@ -124,6 +129,7 @@ mkdir folder-name
 ::: tip Ctrl + C 的两种用途
 
 在终端里，`Ctrl + C` 有两个作用：
+
 1. **停止运行中的程序**（如开发服务器）
 2. **中断当前输入**（如果你正在输入一行命令，想放弃重新输入）
 
@@ -179,6 +185,7 @@ CLI 软件（Command Line Interface）没有菜单和按钮，一切通过输入
 **命令参数入门**
 
 命令后面常跟参数来修改行为。参数有两种格式：
+
 - **短参数**：一个减号加字母，如 `-v`（version）、`-h`（help）
 - **长参数**：两个减号加单词，如 `--version`、`--help`
 

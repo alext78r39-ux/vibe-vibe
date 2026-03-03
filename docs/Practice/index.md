@@ -22,3 +22,4 @@ title: "实践篇"
 - [AI Agent 开发](./11-ai-agents/) —— RAG、向量数据库、MCP 集成
 - [全栈项目实战](./12-fullstack-projects/) —— SaaS、地图应用、移动应用
 - [工具与效率](./13-tools-integration/) —— n8n、GitHub 工作流、React/TS 进阶
+- [TalkCoach：AI 对话训练平台](./14-talkcoach/) —— CS50 风格 Lab/Pset，贯穿进阶篇的全栈实战项目

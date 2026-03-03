@@ -460,134 +460,140 @@ Allow: /security.txt
 `;
     await writeFile(joinPath(siteConfig.outDir, 'robots.txt'), robotsContent, 'utf-8');
 
-    const pages = siteConfig.pages
-      .map((page) => (isAbsolutePath(page) ? relativePath(siteConfig.srcDir, page) : page))
-      .map((page) => page.replace(/\\/g, '/'))
-      .filter((page) => page.endsWith('.md'))
-      .filter((page) => page !== '404.md');
+    // 并行执行所有构建后任务，提升构建速度
+    await Promise.all([
+      // 任务1: 生成 RSS feed
+      (async () => {
+        const pages = siteConfig.pages
+          .map((page) => (isAbsolutePath(page) ? relativePath(siteConfig.srcDir, page) : page))
+          .map((page) => page.replace(/\\/g, '/'))
+          .filter((page) => page.endsWith('.md'))
+          .filter((page) => page !== '404.md');
 
-    type RssItem = {
-      title: string;
-      link: string;
-      description: string;
-      pubDate: Date;
-      category?: string;
-      author?: string;
-      readingTime?: number;
-    };
+        type RssItem = {
+          title: string;
+          link: string;
+          description: string;
+          pubDate: Date;
+          category?: string;
+          author?: string;
+          readingTime?: number;
+        };
 
-    const items: RssItem[] = [];
-    for (const page of pages) {
-      const filePath = joinPath(siteConfig.srcDir, page);
-      try {
-        const source = await readFile(filePath, 'utf-8');
-        const frontmatter = parseSimpleFrontmatter(source);
-        const contentSource = stripFrontmatter(source);
+        const items: RssItem[] = [];
+        for (const page of pages) {
+          const filePath = joinPath(siteConfig.srcDir, page);
+          try {
+            const source = await readFile(filePath, 'utf-8');
+            const frontmatter = parseSimpleFrontmatter(source);
+            const contentSource = stripFrontmatter(source);
 
-        const title =
-          frontmatter.title ||
-          (contentSource.match(/^#\s+(.+)\s*$/m)?.[1]?.trim() || '') ||
-          page.replace(/\/index\.md$/i, '').replace(/\.md$/i, '');
+            const title =
+              frontmatter.title ||
+              (contentSource.match(/^#\s+(.+)\s*$/m)?.[1]?.trim() || '') ||
+              page.replace(/\/index\.md$/i, '').replace(/\.md$/i, '');
 
-        const description =
-          frontmatter.description ||
-          extractDescriptionFromMarkdown(source) ||
-          SITE_DESCRIPTION;
+            const description =
+              frontmatter.description ||
+              extractDescriptionFromMarkdown(source) ||
+              SITE_DESCRIPTION;
 
-        const link = `${SITE_URL}${urlPathForPage(page)}`;
+            const link = `${SITE_URL}${urlPathForPage(page)}`;
 
-        const fileStats = await stat(filePath);
-        const pubDateCandidate = frontmatter.date ? new Date(frontmatter.date) : undefined;
-        const pubDate = pubDateCandidate && !Number.isNaN(pubDateCandidate.getTime()) ? pubDateCandidate : fileStats.mtime;
+            const fileStats = await stat(filePath);
+            const pubDateCandidate = frontmatter.date ? new Date(frontmatter.date) : undefined;
+            const pubDate = pubDateCandidate && !Number.isNaN(pubDateCandidate.getTime()) ? pubDateCandidate : fileStats.mtime;
 
-        // 提取分类信息
-        let category: string | undefined;
-        if (page.startsWith('Basic/')) category = '基础篇';
-        else if (page.startsWith('Advanced/')) category = '进阶篇';
-        else if (page.startsWith('Practice/')) category = '实践篇';
-        else if (page.startsWith('Articles/')) category = '优质文章';
+            // 提取分类信息
+            let category: string | undefined;
+            if (page.startsWith('Basic/')) category = '基础篇';
+            else if (page.startsWith('Advanced/')) category = '进阶篇';
+            else if (page.startsWith('Practice/')) category = '实践篇';
+            else if (page.startsWith('Articles/')) category = '优质文章';
 
-        // 计算阅读时间
-        const readingTime = estimateReadingTime(source);
+            // 计算阅读时间
+            const readingTime = estimateReadingTime(source);
 
-        items.push({
-          title,
-          link,
-          description,
-          pubDate,
-          category,
-          author: 'Eyre',
-          readingTime
-        });
-      } catch (error) {
-        // 记录错误但不中断构建
-        console.warn(`Failed to process ${page} for RSS feed:`, error);
-        continue;
-      }
-    }
+            items.push({
+              title,
+              link,
+              description,
+              pubDate,
+              category,
+              author: 'Eyre',
+              readingTime
+            });
+          } catch (error) {
+            // 记录错误但不中断构建
+            console.warn(`Failed to process ${page} for RSS feed:`, error);
+            continue;
+          }
+        }
 
-    items.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
+        items.sort((a, b) => b.pubDate.getTime() - a.pubDate.getTime());
 
-    const lastBuildDate = items[0]?.pubDate ?? new Date();
-    const rssItemsXml = items
-      .slice(0, 200)
-      .map((item) => {
-        const title = escapeXml(item.title);
-        const link = escapeXml(item.link);
-        const pubDate = escapeXml(item.pubDate.toUTCString());
-        const description = safeCdata(item.description);
-        const category = item.category ? `<category>${escapeXml(item.category)}</category>` : '';
-        const author = item.author ? `<author>${escapeXml(item.author)}</author>` : '';
-        const readingTime = item.readingTime ? `<docs:readingTime>${item.readingTime}</docs:readingTime>` : '';
+        const lastBuildDate = items[0]?.pubDate ?? new Date();
+        const rssItemsXml = items
+          .slice(0, 200)
+          .map((item) => {
+            const title = escapeXml(item.title);
+            const link = escapeXml(item.link);
+            const pubDate = escapeXml(item.pubDate.toUTCString());
+            const description = safeCdata(item.description);
+            const category = item.category ? `<category>${escapeXml(item.category)}</category>` : '';
+            const author = item.author ? `<author>${escapeXml(item.author)}</author>` : '';
+            const readingTime = item.readingTime ? `<docs:readingTime>${item.readingTime}</docs:readingTime>` : '';
 
-        return [
-          '<item>',
-          `<title>${title}</title>`,
-          `<link>${link}</link>`,
-          `<guid isPermaLink="true">${link}</guid>`,
-          `<pubDate>${pubDate}</pubDate>`,
-          `<description><![CDATA[${description}]]></description>`,
-          category,
-          author,
-          readingTime,
-          '</item>'
+            return [
+              '<item>',
+              `<title>${title}</title>`,
+              `<link>${link}</link>`,
+              `<guid isPermaLink="true">${link}</guid>`,
+              `<pubDate>${pubDate}</pubDate>`,
+              `<description><![CDATA[${description}]]></description>`,
+              category,
+              author,
+              readingTime,
+              '</item>'
+            ].join('');
+          })
+          .join('');
+
+        const channelTitle = escapeXml(SITE_TITLE);
+        const channelLink = escapeXml(SITE_URL);
+        const channelDescription = safeCdata(SITE_DESCRIPTION);
+        const channelLanguage = 'zh-CN';
+        const channelLastBuildDate = escapeXml(lastBuildDate.toUTCString());
+        const channelManagingEditor = 'Eyre (contact@vibevibe.cn)';
+        const channelWebMaster = 'Eyre (contact@vibevibe.cn)';
+        const channelCategory = '编程教程';
+
+        const rssXml = [
+          '<?xml version="1.0" encoding="UTF-8"?>',
+          '<rss version="2.0" xmlns:docs="http://example.com/docs">',
+          '<channel>',
+          `<title>${channelTitle}</title>`,
+          `<link>${channelLink}</link>`,
+          `<description><![CDATA[${channelDescription}]]></description>`,
+          `<language>${channelLanguage}</language>`,
+          `<lastBuildDate>${channelLastBuildDate}</lastBuildDate>`,
+          `<managingEditor>${channelManagingEditor}</managingEditor>`,
+          `<webMaster>${channelWebMaster}</webMaster>`,
+          `<category>${channelCategory}</category>`,
+          `<docs>https://www.rssboard.org/rss-specification</docs>`,
+          `<generator>VibeVibe RSS Generator</generator>`,
+          `<ttl>60</ttl>`,  // 缓存时间（分钟）
+          rssItemsXml,
+          '</channel>',
+          '</rss>'
         ].join('');
-      })
-      .join('');
 
-    const channelTitle = escapeXml(SITE_TITLE);
-    const channelLink = escapeXml(SITE_URL);
-    const channelDescription = safeCdata(SITE_DESCRIPTION);
-    const channelLanguage = 'zh-CN';
-    const channelLastBuildDate = escapeXml(lastBuildDate.toUTCString());
-    const channelManagingEditor = 'Eyre (contact@vibevibe.cn)';
-    const channelWebMaster = 'Eyre (contact@vibevibe.cn)';
-    const channelCategory = '编程教程';
+        await writeFile(joinPath(siteConfig.outDir, 'rss.xml'), rssXml, 'utf-8');
+      })(),
 
-    const rssXml = [
-      '<?xml version="1.0" encoding="UTF-8"?>',
-      '<rss version="2.0" xmlns:docs="http://example.com/docs">',
-      '<channel>',
-      `<title>${channelTitle}</title>`,
-      `<link>${channelLink}</link>`,
-      `<description><![CDATA[${channelDescription}]]></description>`,
-      `<language>${channelLanguage}</language>`,
-      `<lastBuildDate>${channelLastBuildDate}</lastBuildDate>`,
-      `<managingEditor>${channelManagingEditor}</managingEditor>`,
-      `<webMaster>${channelWebMaster}</webMaster>`,
-      `<category>${channelCategory}</category>`,
-      `<docs>https://www.rssboard.org/rss-specification</docs>`,
-      `<generator>VibeVibe RSS Generator</generator>`,
-      `<ttl>60</ttl>`,  // 缓存时间（分钟）
-      rssItemsXml,
-      '</channel>',
-      '</rss>'
-    ].join('');
-
-    await writeFile(joinPath(siteConfig.outDir, 'rss.xml'), rssXml, 'utf-8');
-
-    // 生成图片 sitemap
-    await buildImageSitemap(SITE_URL, joinPath(siteConfig.srcDir, 'public'), siteConfig.outDir);
+      // 任务2: 生成图片 sitemap
+      buildImageSitemap(SITE_URL, joinPath(siteConfig.srcDir, 'public'), siteConfig.outDir)
+    ]);
   },
 
   // 1. Markdown 增强配置
@@ -610,6 +616,18 @@ Allow: /security.txt
     // refer to mermaid config options
   },
 
+
+  vue: {
+    template: {
+      compilerOptions: {
+        // 抑制 <tr> cannot be child of <table> 警告（已手动添加 <tbody>）
+        onWarn(warning, defaultHandler) {
+          if (warning.message.includes('cannot be child of')) return
+          defaultHandler(warning)
+        }
+      }
+    }
+  },
 
   vite: {
     plugins: [
@@ -721,6 +739,7 @@ Allow: /security.txt
           { text: 'AI Agent 开发', link: '/Practice/11-ai-agents/' },
           { text: '全栈项目实战', link: '/Practice/12-fullstack-projects/' },
           { text: '工具与效率', link: '/Practice/13-tools-integration/' },
+          { text: 'TalkCoach：AI 对话训练', link: '/Practice/14-talkcoach/' },
         ]
       },
 
@@ -760,7 +779,7 @@ Allow: /security.txt
         'Advanced/13-domain-dns', 'Advanced/14-vps-ops-deploy', 'Advanced/15-seo-analytics', 'Advanced/16-user-feedback-iteration',
         'Advanced/99-next-level',
         'Practice/01-for-liberal-arts', 'Practice/02-for-stem', 'Practice/03-for-professionals',
-        'Practice/10-core-skills', 'Practice/11-ai-agents', 'Practice/12-fullstack-projects', 'Practice/13-tools-integration',
+        'Practice/10-core-skills', 'Practice/11-ai-agents', 'Practice/12-fullstack-projects', 'Practice/13-tools-integration', 'Practice/14-talkcoach',
         'Articles/01-company-blogs', 'Articles/02-podcasts', 'Articles/03-research-reports', 'Articles/04-newsletters', 'Articles/05-communities'
       ],
       

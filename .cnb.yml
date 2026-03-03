@@ -27,7 +27,7 @@ master:
       imports:
         - https://cnb.cool/nfeyre/secret/-/blob/main/edgeone-pages-env.yml
       runner:
-        cpus: 8
+        cpus: 16
       docker:
         image: docker.cnb.cool/nfeyre/default-dev-env:latest
       env:
@@ -55,7 +55,7 @@ develop:
   pull_request:
     - name: pr-build
       runner:
-        cpus: 8
+        cpus: 16
       docker:
         image: docker.cnb.cool/nfeyre/default-dev-env:latest
       stages:

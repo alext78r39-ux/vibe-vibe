@@ -7,6 +7,7 @@ chapter: "第一章"
 # 1.7 创建项目
 
 > **阅读完本节后，你将会收获：**
+>
 > - 掌握文件夹命名规范，避免中文路径导致的开发问题
 > - 学会使用官方脚手架快速创建标准项目结构
 > - 理解 Next.js 项目的目录结构
@@ -32,6 +33,7 @@ chapter: "第一章"
 | `/Users/yourname/projects` | macOS 用户目录 |
 
 **建议的文件夹结构**：
+
 ```
 my-projects/          ← 总文件夹
 ├── my-first-app/     ← 项目1
@@ -55,12 +57,14 @@ my-projects/          ← 总文件夹
 文件路径是文件在文件系统中的位置。告诉 AI "修改 src/app/page.tsx" 时，AI 需要通过路径找到这个文件。
 
 **绝对路径**：从根目录开始的完整路径
+
 ```
 Windows:  C:\Users\YourName\projects\my-app\package.json
 macOS:    /Users/yourname/projects/my-app/package.json
 ```
 
 **相对路径**：从当前目录开始的路径
+
 ```
 ./package.json        # 当前目录下的 package.json
 ../other-project      # 上一级目录的 other-project
@@ -78,6 +82,7 @@ src/app/page.tsx      # 当前目录下 src/app/page.tsx
 | `app.tsx` | `应用.tsx`、`app 文件.tsx` |
 
 **规则**：
+
 - ✅ 使用小写英文字母
 - ✅ 使用连字符 `-` 分隔单词
 - ❌ 避免中文字符、空格、特殊字符
@@ -103,6 +108,7 @@ pnpm create vite@latest my-app -- --template react
 ```
 
 创建时会询问配置选项：
+
 - **TypeScript**：推荐选择 Yes
 - **ESLint**：推荐选择 Yes
 - **Tailwind CSS**：根据需要选择
@@ -117,6 +123,14 @@ pnpm create vite@latest my-app -- --template react
 pnpm create next-app@latest my-app
 ```
 
+:::
+
+::: details 🎮 点击体验：脚手架模拟器
+<ProjectScaffoldFlow />
+
+> 💡 **练习**：点击"开始创建项目"，逐步选择配置选项，观察项目文件结构的生成过程
+>
+> 🎯 **核心概念**：脚手架一条命令搞定项目创建，不要手动逐个创建文件
 :::
 
 ## Next.js 项目结构
@@ -140,6 +154,7 @@ my-next-app/
 ```
 
 **简单理解**：
+
 - `src/app/` - 放页面文件和接口
 - `src/components/` - 放可复用的 UI 组件
 - `src/lib/` - 放工具函数
@@ -209,6 +224,7 @@ pnpm dev
 ### Q: 已经用了中文路径怎么办？
 
 在文件资源管理器中操作：
+
 1. 删除 `node_modules` 文件夹
 2. 创建新的英文文件夹
 3. 把剩余文件复制到新文件夹
@@ -227,11 +243,14 @@ pnpm dev
 | 脚手架创建 | 标准结构、预配置、一键启动 |
 | 手动创建 | 容易漏文件、配置错误、浪费时间 |
 
-**创建项目检查清单**：
-- [ ] 项目名不含中文和空格
-- [ ] 使用官方脚手架
-- [ ] 理解各文件夹的用途
-- [ ] 项目能正常启动
+::: tip 项目命名建议
+项目名建议使用小写字母和连字符，避免中文和空格（如 `my-todo-app`）。这样可以避免某些工具的兼容性问题。
+:::
+
+**项目创建后的验证**：
+
+- [ ] 理解各文件夹的用途（`src/`、`public/`、`app/` 等）
+- [ ] 项目能正常启动（`pnpm dev` 成功，浏览器能访问 `http://localhost:3000`）
 
 ## 相关内容
 

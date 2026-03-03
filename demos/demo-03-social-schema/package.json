@@ -1,0 +1,33 @@
+{
+  "name": "demo-03-social-schema",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "push": "drizzle-kit push",
+    "seed": "tsx src/seed.ts",
+    "demo": "tsx src/operations.ts",
+    "transactions": "tsx src/transactions.ts",
+    "pagination": "tsx src/pagination.ts",
+    "advanced": "tsx src/advanced-queries.ts",
+    "export": "tsx src/export.ts",
+    "validate": "tsx src/validated-operations.ts",
+    "studio": "drizzle-kit studio"
+  },
+  "dependencies": {
+    "@inquirer/prompts": "^8.2.1",
+    "@neondatabase/serverless": "^1.0.0",
+    "chalk": "^5.4.0",
+    "cli-table3": "^0.6.5",
+    "dotenv": "^16.4.7",
+    "drizzle-orm": "^0.45.0",
+    "drizzle-zod": "^0.8.3",
+    "ora": "^8.2.0",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "drizzle-kit": "^0.31.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.9.0"
+  }
+}

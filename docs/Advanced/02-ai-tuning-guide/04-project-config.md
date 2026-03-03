@@ -8,6 +8,7 @@ priority: "🟡"
 # 2.4 项目规则配置 🟡
 
 > **阅读完本节后，你将会收获：**
+>
 > - 理解项目配置文件的作用和使用场景
 > - 掌握 CLAUDE.md 和 settings.json 的配置方法
 > - 学会团队协作/多机开发的配置共享方案
@@ -98,6 +99,7 @@ graph TB
 **30 秒后**，AI 给你完整的配置文件，直接复制粘贴。
 
 **为什么比自己写快**：
+
 | 你自己写 | AI 生成 |
 |---------|--------|
 | 查文档 → 理解格式 → 手写 → 检查 | 描述需求 → 复制结果 |
@@ -138,6 +140,7 @@ graph LR
 ::: tip 关键洞察
 
 **项目配置文件**（无论叫什么名字）本质相同：
+
 - 都是写给 AI 看的项目说明书
 - 核心内容：技术栈 + 编码规范 + 禁止行为
 - 只是不同工具用不同文件名
@@ -171,6 +174,7 @@ Next.js 16 + TypeScript + Tailwind + shadcn/ui
 ```
 
 **创建方式**：
+
 - Claude Code：在项目根目录创建 `CLAUDE.md`
 - Cursor/Qoder/Trae：在 IDE 设置中配置规则文件
 
@@ -206,6 +210,76 @@ lib/         # 工具函数
 ```
 
 :::
+
+### CLAUDE.md 进阶用法 ⭐
+
+::: tip 本节重点
+
+掌握 CLAUDE.md 的高级特性，让项目配置更模块化、更易维护。
+
+:::
+
+#### 记忆命令：让 AI 自动更新配置
+
+在对话中使用 `#` 前缀，Claude Code 会自动将内容写入 CLAUDE.md：
+
+```bash
+# 对话中输入：
+"# 本项目使用 pnpm 作为包管理器，不要使用 npm"
+"# 数据库用 PostgreSQL + Drizzle ORM"
+"# 组件库用 shadcn/ui，不要安装其他 UI 库"
+
+# Claude Code 会自动追加到 CLAUDE.md，无需手动编辑
+```
+
+::: warning 注意
+记忆命令写入的内容会追加到 CLAUDE.md 末尾。如果积累太多，建议定期整理归类。
+:::
+
+#### 模块化规则：`.claude/rules/` 目录
+
+当 CLAUDE.md 变得很长时，可以拆分到 `.claude/rules/` 目录：
+
+```
+.claude/
+├── CLAUDE.md              # 项目概述和核心规则
+└── rules/
+    ├── coding-style.md    # 代码风格规范
+    ├── git-workflow.md    # Git 工作流
+    ├── testing.md         # 测试要求
+    └── security.md        # 安全规则
+```
+
+Claude Code 会自动加载 `rules/` 目录下的所有 `.md` 文件，与 CLAUDE.md 合并生效。
+
+**何时用 `rules/` 目录 vs 单个 CLAUDE.md**：
+
+| 场景 | 推荐方式 | 原因 |
+|------|---------|------|
+| 小项目、规则少于 50 行 | 单个 CLAUDE.md | 简单直接 |
+| 团队项目、多人协作 | `rules/` 目录 | 不同人维护不同规则文件，减少冲突 |
+| 规则超过 100 行 | `rules/` 目录 | 按主题拆分，易于查找和维护 |
+| 需要按条件启用规则 | `rules/` 目录 | 可以通过 `.gitignore` 控制哪些规则生效 |
+
+#### 构建/测试/Lint 命令
+
+::: warning 重要
+
+在 CLAUDE.md 中声明项目的构建命令，是避免 AI "猜错包管理器"的关键手段。
+
+:::
+
+```markdown
+## 常用命令
+- 安装依赖：`pnpm install`
+- 开发服务器：`pnpm dev`
+- 构建：`pnpm build`
+- 测试：`pnpm test`
+- Lint：`pnpm lint`
+- 类型检查：`pnpm typecheck`
+```
+
+如果不声明，AI 可能会用 `npm run build` 或 `yarn test`——在 pnpm 项目中这会导致依赖解析错误。
 
 ## 团队协作配置 ⭐
 
@@ -279,6 +353,7 @@ node_modules/              # 依赖包
 settings.json 是 Claude Code 的系统配置文件，控制权限模式、环境变量、Hooks、MCP 服务器等。
 
 **与 CLAUDE.md 的区别**：
+
 - `CLAUDE.md`：写给 AI 看的项目说明书
 - `settings.json`：控制工具行为的系统配置
 
@@ -346,9 +421,9 @@ Hooks 在特定事件时自动执行脚本，详见 2.2 VibeCoding 工作流 - H
 |------|----------|------------------|
 | `PreToolUse` | 工具调用前 | ✅ 需要 |
 | `PostToolUse` | 工具调用后 | ✅ 需要 |
-| `UserPromptSubmit` | 用户提交提示时 | ❌ 不需要 |
-| `SessionStart` | 会话开始时 | ❌ 不需要 |
+| `PostToolUseFailure` | 工具执行失败后 | ✅ 需要 |
 | `Notification` | 发送通知时 | ❌ 不需要 |
+| `UserPromptSubmit` | 用户提交提示时 | ❌ 不需要 |
 | `Stop` | 主代理完成响应时 | ❌ 不需要 |
 
 :::
@@ -539,6 +614,7 @@ graph LR
 ```
 
 **记住**：
+
 1. **对话优先**：先沟通，再配置
 2. **文档为主**：README 和项目文档更完整
 3. **配置为辅**：团队协作时才必需

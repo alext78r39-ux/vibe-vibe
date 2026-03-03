@@ -7,6 +7,7 @@ chapter: "第一章"
 # 1.1 代码格式演变
 
 > **阅读完本节后，你将会收获：**
+>
 > - 理解 HTML、CSS、JavaScript 三者如何协同工作构建网页
 > - 了解代码格式从单文件到模块化、TypeScript 的演变过程
 > - 知道什么时候用简单格式，什么时候用复杂格式
@@ -211,6 +212,7 @@ count.toFixed(2);  // 💥 运行时崩溃
 ```
 
 你不需要记住语法，只需要知道：
+
 - `.ts` 或 `.tsx` 文件需要通过 `pnpm dev` 运行
 - 看到 `: string` 这种类型标注时，知道这是 TypeScript 即可
 
@@ -223,6 +225,7 @@ count.toFixed(2);  // 💥 运行时崩溃
 首先判断代码类型：
 
 **单文件 HTML**：
+
 ```bash
 # 直接双击，或
 open index.html      # Mac
@@ -230,6 +233,7 @@ start index.html     # Windows
 ```
 
 **TypeScript 项目**：
+
 ```bash
 pnpm install   # 安装依赖
 pnpm dev       # 启动开发服务器
