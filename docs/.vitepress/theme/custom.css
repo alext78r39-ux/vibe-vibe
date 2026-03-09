@@ -97,6 +97,15 @@
   --vp-code-copy-code-bg: var(--card);
   --vp-code-copy-code-hover-bg: var(--background);
 
+  --scrollbar-size: 12px;
+  --scrollbar-radius: 999px;
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(61, 61, 58, 0.22);
+  --scrollbar-thumb-hover: rgba(61, 61, 58, 0.34);
+  --scrollbar-sidebar-track: transparent;
+  --scrollbar-sidebar-thumb: rgba(20, 20, 19, 0.18);
+  --scrollbar-sidebar-thumb-hover: rgba(20, 20, 19, 0.28);
+
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #141413 20%, #73726c 100%);
   --vp-home-hero-image-background-image: linear-gradient(-45deg, rgba(20, 20, 19, 0.24), rgba(115, 114, 108, 0.24));
@@ -213,10 +222,77 @@ html[lang="en-US"] .VPContent.is-home {
   --vp-code-copy-code-bg: var(--card);
   --vp-code-copy-code-hover-bg: var(--background);
 
+  --scrollbar-track: transparent;
+  --scrollbar-thumb: rgba(194, 192, 182, 0.24);
+  --scrollbar-thumb-hover: rgba(194, 192, 182, 0.38);
+  --scrollbar-sidebar-track: transparent;
+  --scrollbar-sidebar-thumb: rgba(250, 249, 245, 0.18);
+  --scrollbar-sidebar-thumb-hover: rgba(250, 249, 245, 0.3);
+
   --vp-home-hero-name-color: transparent;
   --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #faf9f5 20%, #c2c0b6 100%);
   --vp-home-hero-image-background-image: linear-gradient(-45deg, rgba(250, 249, 245, 0.18), rgba(194, 192, 182, 0.14));
   --vp-home-hero-image-filter: blur(56px);
+}
+
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+html::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+}
+
+html::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+}
+
+html::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--scrollbar-thumb), color-mix(in srgb, var(--scrollbar-thumb) 78%, transparent));
+  border: 3px solid transparent;
+  border-radius: var(--scrollbar-radius);
+  background-clip: padding-box;
+}
+
+html::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--scrollbar-thumb-hover), color-mix(in srgb, var(--scrollbar-thumb-hover) 82%, transparent));
+  border: 3px solid transparent;
+  background-clip: padding-box;
+}
+
+.VPSidebar {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-sidebar-thumb) var(--scrollbar-sidebar-track);
+}
+
+.VPSidebar::-webkit-scrollbar {
+  width: var(--scrollbar-size);
+}
+
+.VPSidebar::-webkit-scrollbar-track {
+  background: var(--scrollbar-sidebar-track);
+}
+
+.VPSidebar::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+.VPSidebar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, var(--scrollbar-sidebar-thumb), color-mix(in srgb, var(--scrollbar-sidebar-thumb) 78%, transparent));
+  border: 3px solid transparent;
+  border-radius: var(--scrollbar-radius);
+  background-clip: padding-box;
+}
+
+.VPSidebar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, var(--scrollbar-sidebar-thumb-hover), color-mix(in srgb, var(--scrollbar-sidebar-thumb-hover) 82%, transparent));
+  border: 3px solid transparent;
+  background-clip: padding-box;
 }
 
 /* 图片放大的过渡动画 */
