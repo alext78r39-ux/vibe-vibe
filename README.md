@@ -32,6 +32,18 @@
 | 想直接动手做项目 | 基础篇 → 第4章 实战 |
 | 想找项目练手 | 实践篇 |
 
+### 私有化部署
+
+如果你想在本地或内网环境部署本教程站点，仓库已经提供了可直接使用的 `Dockerfile` 和 `docker-compose.yml`：
+
+```bash
+docker compose up -d --build
+```
+
+默认访问地址为 `http://localhost:1024`。
+
+更完整的部署方式、静态文件部署方案和离线环境注意事项，请查看[部署指南](./docs/deployment/index.md)。
+
 ### 教程定位
 
 国内首个系统化的 Vibe Coding 开源教程，分为四大板块：

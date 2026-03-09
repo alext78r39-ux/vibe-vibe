@@ -38,6 +38,18 @@ In practice, this project is not only about "AI programming". It is about using 
 | Someone who wants project practice | Practice |
 | Someone who wants curated learning resources | Articles |
 
+## Self-Hosted Deployment
+
+If you want to deploy the site inside a local or private network, this repository already includes a ready-to-use `Dockerfile` and `docker-compose.yml`:
+
+```bash
+docker compose up -d --build
+```
+
+The default address is `http://localhost:1024`.
+
+For full deployment options, static-file hosting, and offline-environment notes, see the [deployment guide](./docs/deployment/index.md).
+
 ## Project Structure
 
 Vibe Vibe currently has four major parts:
