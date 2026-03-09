@@ -1,59 +1,64 @@
 # ============================================
-# IDE / Editor
-# ============================================
-.idea
-.vscode
-.trae
-.factory
-
-# ============================================
-# Node.js / Package Manager
-# ============================================
-node_modules
-.pnpm-store
-dist
-.vitepress/dist
-.vitepress/cache
-cache
-
-# ============================================
-# OS
+# OS / System
 # ============================================
 .DS_Store
-.temp
-temp
+.temp/
+temp/
+
+# ============================================
+# IDE / Editor
+# ============================================
+.idea/
+.vscode/
+.trae/
+.factory/
+
+# ============================================
+# Dependencies / Build Output
+# ============================================
+node_modules/
+.pnpm-store/
+dist/
+.vitepress/cache/
+.vitepress/dist/
+cache/
 
 # ============================================
 # Python
 # ============================================
-__pycache__
+__pycache__/
 *.pyc
 rename_docs.py
 
 # ============================================
-# Project Specific
+# Environment / Local Config
 # ============================================
-ai-write-guide
-docs/docs
-docs/dev-dist
-nano-api-test/
-# 旧 demo 位置（已迁移到 /demos）
-docs/Advanced/demo/
-
-# Demo 项目构建产物
-demos/*/node_modules
-demos/*/.next
-demos/*/.env
-
-# 内部文档（不公开）
-VibeVibe 项目协作与开发指南.md
-scripts/
-archive/
-# 环境配置
 .env
 .claude/
 
-CLAUDE.md
-AGENTS.md
-**/CLAUDE.md
+# ============================================
+# Internal / Private Project Files
+# ============================================
+ai-write-guide/
+archive/
+docs/dev-dist/
+docs/docs/
+nano-api-test/
+scripts/
+VibeVibe 项目协作与开发指南.md
+
+# 旧 demo 位置（已迁移到 /demos）
+docs/Advanced/demo/
+
+# ============================================
+# Demo Project Artifacts
+# ============================================
+demos/*/.env
+demos/*/.next/
+demos/*/node_modules/
+
+# ============================================
+# Agent Instruction Files
+# ============================================
 **/AGENTS.md
+**/CLAUDE.md
