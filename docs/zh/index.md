@@ -37,25 +37,6 @@ features:
 ---
 
 <style>
-:root {
-  --vp-home-hero-name-color: transparent;
-  --vp-home-hero-name-background: -webkit-linear-gradient(120deg, #15a051ff 30%, #2eb3dfff);
-  --vp-home-hero-image-background-image: linear-gradient(-45deg, #15a051ff 50%, #2eb3dfff 50%);
-  --vp-home-hero-image-filter: blur(44px);
-}
-
-@media (min-width: 640px) {
-  :root {
-    --vp-home-hero-image-filter: blur(56px);
-  }
-}
-
-@media (min-width: 960px) {
-  :root {
-    --vp-home-hero-image-filter: blur(68px);
-  }
-}
-
 /* 按钮颜色配置 - 针对每个 action 包裹层单独配置 */
 /* 第1个按钮：零基础入门 - 绿色 */
 .VPHero .actions > .action:nth-child(1) .VPButton {
