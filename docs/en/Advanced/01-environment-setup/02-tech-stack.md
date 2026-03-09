@@ -1,7 +1,7 @@
 ---
 title: "1.2 Tech Stack Concepts"
 description: "Understand the layers of modern Web development technologies"
-chapter: "第一章"
+chapter: "Chapter 1"
 ---
 
 # 1.2 Tech Stack Concepts
@@ -114,7 +114,7 @@ AI does not write code from scratch; it assembles these ready-made "building blo
 
 | Database | Free Hosting Platforms |
 |--------|-------------|
-| PostgreSQL | Supabase、Neon、Railway |
+| PostgreSQL | Supabase, Neon, Railway |
 | MySQL | Almost none |
 
 **5. When do you need full-stack?**

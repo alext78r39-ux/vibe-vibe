@@ -56,15 +56,6 @@ features:
   }
 }
 
-/* Guide text styling */
-.VPHero .tagline::after {
-  content: "Click below to start your AI creation journey";
-  display: block;
-  margin-top: 1rem;
-  color: #6B7280;
-  font-size: 0.95rem;
-}
-
 /* Button color configuration - individual styling for each action wrapper */
 /* Button 1: Beginner's Guide - Green */
 .VPHero .actions > .action:nth-child(1) .VPButton {

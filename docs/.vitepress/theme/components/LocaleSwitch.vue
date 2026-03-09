@@ -8,8 +8,10 @@ defineProps<{
 
 const route = useRoute()
 
+const mirroredSectionPrefixes = ['/Basic/', '/Advanced/', '/Practice/', '/Articles/']
+
 function isMirroredChinesePath(path: string) {
-  return path.startsWith('/Basic/') || path.startsWith('/Advanced/')
+  return mirroredSectionPrefixes.some((prefix) => path.startsWith(prefix))
 }
 
 const isEnglish = computed(() => route.path.startsWith('/en/') || route.path === '/')

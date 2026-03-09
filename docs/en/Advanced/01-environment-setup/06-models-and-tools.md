@@ -1,7 +1,7 @@
 ---
 title: "1.6 Models and Tools"
 description: "Understand the difference between models and tools, and choose the right AI coding setup"
-chapter: "第一章"
+chapter: "Chapter 1"
 ---
 
 # 1.6 Models and Tools
@@ -26,8 +26,8 @@ If you haven't installed Claude Code and configured a model yet, please refer to
 
 | Category | Representative Products |
 |------|---------|
-| **China** | [GLM](https://open.bigmodel.cn/)（智谱）、[DeepSeek](https://www.deepseek.com/)、[Kimi](https://kimi.moonshot.cn/)（月之暗面）、[Doubao](https://www.doubao.com/)（字节）、[MiniMax](https://www.minimaxi.com/) |
-| **International** | [GPT](https://openai.com/)（OpenAI）、[Gemini](https://gemini.google.com/)（Google）、[Claude](https://claude.ai/)（Anthropic） |
+| **China** | [GLM](https://open.bigmodel.cn/) (Zhipu), [DeepSeek](https://www.deepseek.com/), [Kimi](https://kimi.moonshot.cn/) (Moonshot), [Doubao](https://www.doubao.com/) (ByteDance), [MiniMax](https://www.minimaxi.com/) |
+| **International** | [GPT](https://openai.com/) (OpenAI), [Gemini](https://gemini.google.com/) (Google), [Claude](https://claude.ai/) (Anthropic) |
 
 **Tools** are responsible for executing specific actions, such as reading files, running commands, and committing code. Tools need to be connected to a model in order to work.
 
@@ -49,7 +49,7 @@ When you normally use AI, you might be chatting in a web-based chatbox:
 | Type | Representative Products | Features |
 |------|---------|------|
 | **CLI Tools** | Claude Code | Runs in the command line, no graphical interface |
-| **IDE Tools** | Cursor、Windsurf、Trae | Graphical interface, visual operations |
+| **IDE Tools** | Cursor, Windsurf, Trae | Graphical interface, visual operations |
 
 
 ::: tip CLI vs IDE Tools: How Should You Choose?
@@ -93,8 +93,8 @@ Most AI IDEs are built on **VS Code** (such as Cursor, Windsurf, and Trae), so t
 
 | Type | International Vendors | Domestic Vendors |
 |------|---------|---------|
-| **CLI** | [Claude Code](https://claude.com/product/claude-code)、[Codex CLI](https://openai.com/)、[Gemini CLI](https://gemini.google.com/)、[Aider](https://aider.chat/)、[OpenCode](https://opencode.ai/) | [Qoder CLI](https://qoder.com/)、[iFlow CLI](https://iflow.cn/) |
-| **IDE** | [Cursor](https://cursor.com/)、[Windsurf](https://windsurf.com/)、[Zed](https://zed.dev/)、[GitHub Copilot](https://github.com/features/copilot) | [Trae](https://www.trae.cn/)、[Qoder](https://qoder.com/)、[CodeBuddy](https://copilot.tencent.com/) |
+| **CLI** | [Claude Code](https://claude.com/product/claude-code), [Codex CLI](https://openai.com/), [Gemini CLI](https://gemini.google.com/), [Aider](https://aider.chat/), [OpenCode](https://opencode.ai/) | [Qoder CLI](https://qoder.com/), [iFlow CLI](https://iflow.cn/) |
+| **IDE** | [Cursor](https://cursor.com/), [Windsurf](https://windsurf.com/), [Zed](https://zed.dev/), [GitHub Copilot](https://github.com/features/copilot) | [Trae](https://www.trae.cn/), [Qoder](https://qoder.com/), [CodeBuddy](https://copilot.tencent.com/) |
 
 ::: tip Advantages of Claude Code
 
@@ -123,7 +123,7 @@ An API Key is the "pass" for calling large-model services. It serves as your ide
 
 ```bash
 npx @z_ai/coding-helper
-# 输入获取到的 API Key，工具会自动完成所有配置
+# Enter the API Key you obtained; the tool will auto-complete all configuration
 ```
 
 ### Cost Comparison
@@ -142,9 +142,9 @@ The following tools are **not required**. Install them as needed:
 
 | Tool Type | Recommended Products | When You Need Them |
 |---------|---------|-------------|
-| **Git GUI** | GitHub Desktop、Sourcetree | If you're not familiar with Git commands |
-| **Database** | DBeaver、Drizzle Studio | If you frequently view/modify data |
-| **API Testing** | Postman、Thunder Client | If you need to debug API endpoints |
+| **Git GUI** | GitHub Desktop, Sourcetree | If you're not familiar with Git commands |
+| **Database** | DBeaver, Drizzle Studio | If you frequently view/modify data |
+| **API Testing** | Postman, Thunder Client | If you need to debug API endpoints |
 
 ::: tip Minimum Setup
 

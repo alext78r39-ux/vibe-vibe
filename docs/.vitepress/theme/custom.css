@@ -29,6 +29,40 @@
   line-height: 1.7;
 }
 
+.preview-notice-wrap {
+  margin-top: 24px;
+}
+
+.preview-notice {
+  margin-top: 2rem;
+  padding: 12px 14px;
+  border: 1px solid rgba(212, 149, 44, 0.35);
+  border-radius: 12px;
+  background: rgba(212, 149, 44, 0.08);
+  color: var(--vp-c-text-2);
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.preview-notice strong {
+  color: var(--vp-c-text-1);
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.preview-notice a {
+  color: var(--vp-c-brand);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.home-guide-text {
+  margin-top: 1rem;
+  color: #6B7280;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
 .VPNavBarTranslations,
 .VPNavScreenTranslations {
   display: none !important;
@@ -163,35 +197,6 @@
   font-size: 14px;
   color: var(--vp-c-text-2);
   line-height: 1.5;
-}
-
-/* 顶部提示条样式及布局调整 */
-:root {
-  --vp-layout-top-height: 0px;
-}
-
-.info-banner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 2000;
-}
-
-.VPNav {
-  top: var(--vp-layout-top-height) !important;
-}
-
-.VPSidebar {
-  top: calc(var(--vp-nav-height) + var(--vp-layout-top-height)) !important;
-}
-
-.VPLocalNav {
-  top: var(--vp-layout-top-height) !important;
-}
-
-.Layout {
-  padding-top: var(--vp-layout-top-height) !important;
 }
 
 @media (max-width: 640px) {

@@ -56,15 +56,6 @@ features:
   }
 }
 
-/* 引导话语样式 */
-.VPHero .tagline::after {
-  content: "点击下方按钮，开始你的 AI 创造之旅";
-  display: block;
-  margin-top: 1rem;
-  color: #6B7280;
-  font-size: 0.95rem;
-}
-
 /* 按钮颜色配置 - 针对每个 action 包裹层单独配置 */
 /* 第1个按钮：零基础入门 - 绿色 */
 .VPHero .actions > .action:nth-child(1) .VPButton {

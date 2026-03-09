@@ -91,6 +91,7 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
               { text: '附录', link: '/Basic/99-appendix/' },
               { text: '结语', link: '/Basic/100-epilogue/' },
               { text: '下部预告', link: '/Basic/101-next-part/' },
+              { text: '基础篇（旧）', link: '/Basic-old/' },
             ]
           },
           {
@@ -283,7 +284,7 @@ export default withMermaid(defineConfigWithTheme<DefaultTheme.Config>({
     // 语言和作者链接（SEO增强）
     ['link', { rel: 'alternate', hreflang: 'en-US', href: `${SITE_URL}/en/` }],
     ['link', { rel: 'alternate', hreflang: 'zh-CN', href: `${SITE_URL}/zh/` }],
-    ['link', { rel: 'alternate', hreflang: 'x-default', href: `${SITE_URL}/en/` }],
+    ['link', { rel: 'alternate', hreflang: 'x-default', href: `${SITE_URL}/` }],
     ['link', { rel: 'author', href: 'https://github.com/datawhalechina/vibe-vibe/graphs/contributors' }],
 
     // DNS 预解析 - 提前解析外部域名
@@ -879,7 +880,7 @@ Allow: /security.txt
           excludeFolders: ['en', 'zh', 'public', 'assets', '.vitepress', '.claude', 'deployment'],
 
         manualSortFileNameByPriority: [
-          'Basic', 'Advanced', 'Practice', 'Articles',
+          'Basic', 'Advanced', 'Practice', 'Articles', 'Basic-old',
           'Basic/00-preface', 'Basic/01-awakening', 'Basic/02-mindset', 'Basic/03-technique',
           'Basic/04-practice-0-to-1', 'Basic/05-advanced', 'Basic/06-learning-paths',
           'Basic/99-appendix', 'Basic/100-epilogue', 'Basic/101-next-part',
@@ -915,6 +916,14 @@ Allow: /security.txt
           'Basic/00-preface', 'Basic/01-awakening', 'Basic/02-mindset', 'Basic/03-technique',
           'Basic/04-practice-0-to-1', 'Basic/05-advanced', 'Basic/06-learning-paths',
           'Basic/99-appendix', 'Basic/100-epilogue', 'Basic/101-next-part',
+          'Advanced/01-environment-setup', 'Advanced/02-ai-tuning-guide', 'Advanced/03-prd-doc-driven',
+          'Advanced/04-dev-fundamentals', 'Advanced/05-ui-ux', 'Advanced/06-data-persistence-database',
+          'Advanced/07-backend-api', 'Advanced/08-auth-security', 'Advanced/09-testing-automation',
+          'Advanced/10-localhost-public-access', 'Advanced/11-git-collaboration', 'Advanced/12-serverless-deploy-cicd',
+          'Advanced/13-domain-dns', 'Advanced/14-vps-ops-deploy', 'Advanced/15-seo-analytics', 'Advanced/16-user-feedback-iteration',
+          'Advanced/99-next-level',
+          'Articles/01-core-concepts', 'Articles/02-technical-architecture', 'Articles/03-toolchain-frameworks',
+          'Articles/04-engineering-practices', 'Articles/05-security-compliance', 'Articles/06-business-trends',
         ],
 
         collapsed: true,

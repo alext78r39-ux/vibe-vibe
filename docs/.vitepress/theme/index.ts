@@ -359,8 +359,10 @@ export default {
     const copy = computed(() =>
       route.path.startsWith('/en/')
         ? {
-            alphaBanner:
-              '⚠️ Alpha preview warning: this is an early internal build. Some parts are still incomplete and issues may exist. Feedback is very welcome.',
+            homeGuideText: 'Click below to start your AI creation journey',
+            previewLabel: 'Alpha Preview:',
+            previewText:
+              'This is an early internal build. Some chapters are still incomplete and issues may exist. Feedback is very welcome on ',
             feedbackLabel: 'Feedback & Suggestions:',
             feedbackText:
               'Found something inaccurate or want to add more context? Leave a comment below, or open an issue on ',
@@ -368,31 +370,47 @@ export default {
             starText: 'Give us a Star:'
           }
         : {
-            alphaBanner:
-              '⚠️ Alpha内测版本警告：此为早期内部构建版本，尚不完整且可能存在错误，欢迎大家提Issue反馈问题或建议',
+            homeGuideText: '点击下方按钮，开始你的 AI 创造之旅',
+            previewLabel: 'Alpha内测提示：',
+            previewText:
+              '当前为早期内部构建版本，部分章节仍在完善中，也可能存在问题，欢迎到 ',
             feedbackLabel: '反馈与建议：',
             feedbackText: '发现内容有误或想补充？欢迎在下方评论区留言，或到 ',
             issueLink: 'GitHub 提 Issue',
             starText: '点我给个 Star 吧：'
           }
     )
+
+    const isHomeLayout = computed(() => frontmatter.value.layout === 'home')
+
+    const renderPreviewNotice = () =>
+      h('div', { class: 'preview-notice' }, [
+        h('strong', null, copy.value.previewLabel),
+        copy.value.previewText,
+        h(
+          'a',
+          {
+            href: 'https://github.com/datawhalechina/vibe-vibe/issues',
+            target: '_blank',
+            rel: 'noopener noreferrer'
+          },
+          copy.value.issueLink
+        ),
+        '.'
+      ])
     
     return h(DefaultTheme.Layout, null, {
-      'layout-top': () => {
-        return h('div', {
-          class: 'info-banner',
-          style: {
-            background: '#e6a23c',
-            color: '#fff',
-            padding: '8px',
-            textAlign: 'center',
-            fontSize: '14px',
-            lineHeight: '1.5'
-          }
-        }, copy.value.alphaBanner)
-      },
+      'home-hero-info-after': () =>
+        isHomeLayout.value
+          ? h('p', { class: 'home-guide-text' }, copy.value.homeGuideText)
+          : null,
+      'page-bottom': () =>
+        h('div', { class: 'preview-notice-wrap' }, [renderPreviewNotice()]),
       'doc-after': () => {
+        if (isHomeLayout.value) return null
+
         const children: VNode[] = [
+          renderPreviewNotice(),
           h('div', { class: 'feedback-tip' }, [
             h('strong', null, copy.value.feedbackLabel),
             copy.value.feedbackText,
@@ -405,7 +423,6 @@ export default {
               },
               copy.value.issueLink
             ),
-            ,
             h('div', { class: 'feedback-actions' }, [
               h('span', { class: 'github-star-text' }, copy.value.starText),
               h('span', { class: 'github-star-wrap' }, [
@@ -463,18 +480,6 @@ export default {
 
     onMounted(() => {
       initZoom()
-      
-      // 动态计算 Banner 高度并设置 CSS 变量
-      const updateBannerHeight = () => {
-        const banner = document.querySelector('.info-banner')
-        if (banner) {
-          const height = (banner as HTMLElement).offsetHeight
-          document.documentElement.style.setProperty('--vp-layout-top-height', `${height}px`)
-        }
-      }
-      
-      updateBannerHeight()
-      window.addEventListener('resize', updateBannerHeight)
     })
 
     // 监听路由变化，确保切换页面后图片依然可以放大
