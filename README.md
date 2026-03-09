@@ -34,28 +34,15 @@
 
 ### 私有化部署
 
-如果你想在本地或内网环境部署本教程站点，可以使用 Docker 快速部署：
+如果你想在本地或内网环境部署本教程站点，仓库已经提供了可直接使用的 `Dockerfile` 和 `docker-compose.yml`：
 
 ```bash
-# 1. 克隆项目
-git clone https://github.com/datawhalechina/vibe-vibe.git
-cd vibe-vibe
-
-# 2. 构建并启动服务
-docker-compose up -d
-
-# 3. 访问服务
-# 浏览器打开 http://localhost:1024
+docker compose up -d --build
 ```
 
-#### 自定义端口
+默认访问地址为 `http://localhost:1024`。
 
-如需修改访问端口，编辑 `docker-compose.yml` 文件中的端口映射：
-
-```yaml
-ports:
-  - "1024:80"  # 将1024改为你想要的端口号
-```
+更完整的部署方式、静态文件部署方案和离线环境注意事项，请查看[部署指南](./docs/deployment/index.md)。
 
 ### 教程定位
 
